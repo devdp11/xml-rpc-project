@@ -23,7 +23,7 @@ class CSVtoXMLConverter:
         # read brands
         brands = self._reader.read_entities(
             attr="Brand",
-            builder=lambda row: Brand(row["Brand"], row["Country"])
+            builder=lambda row: Brand(row["Brand"], countries[row["Country"]])
         )
 
         # read models

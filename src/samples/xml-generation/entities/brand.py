@@ -1,8 +1,9 @@
 import xml.etree.ElementTree as ET
+from entities.country import Country
 
 class Brand:
 
-    def __init__(self, name: str, country: str):
+    def __init__(self, name: str, country: Country):
         Brand.counter += 1
         self._id = Brand.counter
         self._name = name
@@ -16,11 +17,7 @@ class Brand:
         el = ET.Element("Brand")
         el.set("id", str(self._id))
         el.set("name", self._name)
-
-        # Assuming self._country is a string representing the country identifier
-        country_el = ET.Element("Country")
-        country_el.text = self._country
-        el.append(country_el)
+        el.set("country_ref", str(self._country.get_id()))
 
         models_el = ET.Element("Models")
         for model in self._models:
