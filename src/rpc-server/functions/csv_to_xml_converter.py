@@ -107,29 +107,34 @@ class CSVtoXMLConverter:
             after_create=None
         )
 
-        # read vehicles
-        vehicles = self.csv_reader.read_entities(
-            attr="Model",
-            builder=lambda row: Vehicle(
-                brand=brands[row["Brand"]],
-                model=models[row["Model"]],
-                year=row.get("Year", ""),  # Adiciona uma verificação para a chave "Year"
-                engine_fuel_type=fuels.get(row["Engine Fuel Type"], ""),  # Adiciona uma verificação para a chave "Engine Fuel Type"
-                engine_hp=row.get("Engine HP", ""),  # Adiciona uma verificação para a chave "Engine HP"
-                engine_cylinders=row.get("Engine Cylinders", ""),  # Adiciona uma verificação para a chave "Engine Cylinders"
-                transmission_type=transmissions.get(row["Transmission Type"], ""),  # Adiciona uma verificação para a chave "Transmission Type"
-                driven_wheels=tractions.get(row["Driven Wheels"], ""),  # Adiciona uma verificação para a chave "Driven Wheels"
-                number_of_doors=row.get("Number of Doors", ""),  # Adiciona uma verificação para a chave "Number of Doors"
-                market_category=row.get("Market Category", "").split(",") if row.get("Market Category") else [],  # Adiciona uma verificação para a chave "Market Category"
-                vehicle_size=sizes.get(row["Vehicle Size"], ""),  # Adiciona uma verificação para a chave "Vehicle Size"
-                vehicle_style=styles.get(row["Vehicle Style"], ""),  # Adiciona uma verificação para a chave "Vehicle Style"
-                highway_mpg=row.get("Highway MPG", ""),  # Adiciona uma verificação para a chave "Highway MPG"
-                city_mpg=row.get("City MPG", ""),  # Adiciona uma verificação para a chave "City MPG"
-                popularity=row.get("Popularity", ""),  # Adiciona uma verificação para a chave "Popularity"
-                msrp=row.get("MSRP", ""),  # Adiciona uma verificação para a chave "MSRP"
-                country=countries.get(row["Country"], "")  # Adiciona uma verificação para a chave "Country"
-            )
-        )
+        vehicles_dict = {}
+
+        for row in self.csv_reader.loop():
+            if "Model" in row:
+                model = models[row["Model"]]
+                if model not in vehicles_dict:
+                    vehicles_dict[model] = []
+                vehicles_dict[model].append(
+                    Vehicle(
+                        brand=brands[row["Brand"]],
+                        model=model,
+                        year=row.get("Year", ""),
+                        engine_fuel_type=fuels.get(row["Engine Fuel Type"], ""),
+                        engine_hp=row.get("Engine HP", ""),
+                        engine_cylinders=row.get("Engine Cylinders", ""),
+                        transmission_type=transmissions.get(row["Transmission Type"], ""),
+                        driven_wheels=tractions.get(row["Driven Wheels"], ""),
+                        number_of_doors=row.get("Number of Doors", ""),
+                        market_category=row.get("Market Category", "").split(",") if row.get("Market Category") else [],
+                        vehicle_size=sizes.get(row["Vehicle Size"], ""),
+                        vehicle_style=styles.get(row["Vehicle Style"], ""),
+                        highway_mpg=row.get("Highway MPG", ""),
+                        city_mpg=row.get("City MPG", ""),
+                        popularity=row.get("Popularity", ""),
+                        msrp=row.get("MSRP", ""),
+                        country=countries.get(row["Country"], "")
+                    ).to_xml()
+                )
 
         root_el = ET.Element("Data")
 
@@ -173,8 +178,13 @@ class CSVtoXMLConverter:
                     unique_categories.add(category_name)
 
         vehicles_el = ET.Element("Vehicles")
-        for vehicle in vehicles.values():
-            vehicles_el.append(vehicle.to_xml())
+        all_vehicles = []
+
+        for vehicle_list in vehicles_dict.values():
+            all_vehicles.extend(vehicle_list)
+
+        vehicles_el.extend(all_vehicles)
+
 
         root_el.append(brands_el)
         root_el.append(countries_el)
