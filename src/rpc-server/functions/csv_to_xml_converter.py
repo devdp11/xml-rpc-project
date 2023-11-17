@@ -214,15 +214,15 @@ class CSVtoXMLConverter:
                         with open(file_path, 'w', encoding='utf-8') as file:
                             file.write(xml_str)
 
-                    success_message = f"Validation sucessfully made! File '{file_path}' was sucessfully created."
+                    success_message = f"\nValidation sucessfully made!"
                     print(success_message)
                     return xml_str
                 else:
-                    error_message = "Validation failed. XML won't be generated"
+                    error_message = "\nValidation failed. XML won't be generated"
                     print(error_message)
                     return None, error_message
             except etree.DocumentInvalid as e:
-                error_message = f"Validation error: {e}!"
+                error_message = f"\nValidation error: {e}!"
                 print(error_message)
                 return None
         else:
@@ -232,13 +232,9 @@ class CSVtoXMLConverter:
         try:
             xsd_tree = etree.parse(xsd_path)
             schema = etree.XMLSchema(xsd_tree)
-
             xml_doc = etree.fromstring(xml_str)
-
             schema.assertValid(xml_doc)
 
-            print("Validation sucessfully made!")
             return True
         except etree.DocumentInvalid as e:
-            print(f"Validation error: {e}!")
             return False

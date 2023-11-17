@@ -13,6 +13,7 @@ services:
     build: docker/images/python
     volumes:
       - "./src/rpc-server:/app"
+      - "./docker/volumes/data:/data"
     depends_on:
       - db
 
