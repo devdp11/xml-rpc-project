@@ -538,6 +538,9 @@ Mercedes-Benz;500-Class;1993;regular unleaded;315;8;AUTOMATIC;rear wheel drive;2
 Mercedes-Benz;500-Class;1993;regular unleaded;315;8;AUTOMATIC;rear wheel drive;4;Luxury,Performance;Midsize;Sedan;18;14;617;3613;Germany
 Mercedes-Benz;500-Class;1993;regular unleaded;315;8;AUTOMATIC;rear wheel drive;2;Luxury,Performance;Compact;Convertible;19;14;617;5140;Germany
 Mercedes-Benz;500-Class;1993;regular unleaded;315;8;AUTOMATIC;rear wheel drive;4;Luxury;Large;Sedan;16;12;617;2692;Germany
+FIAT;500e;2015;electric;;0;DIRECT_DRIVE;front wheel drive;2;Hatchback;Compact;2dr Hatchback;108;122;819;31800;Italy
+FIAT;500e;2016;electric;;0;DIRECT_DRIVE;front wheel drive;2;Hatchback;Compact;2dr Hatchback;103;121;819;31800;Italy
+FIAT;500e;2017;electric;;0;DIRECT_DRIVE;front wheel drive;2;Hatchback;Compact;2dr Hatchback;103;121;819;31800;Italy
 FIAT;500;2015;premium unleaded (recommended);160;4;MANUAL;front wheel drive;2;Factory Tuner,Performance;Compact;Convertible;34;28;819;26595;Italy
 FIAT;500;2015;premium unleaded (recommended);101;4;MANUAL;front wheel drive;2;Hatchback;Compact;2dr Hatchback;40;31;819;18700;Italy
 FIAT;500;2015;premium unleaded (recommended);135;4;MANUAL;front wheel drive;2;Hatchback;Compact;2dr Hatchback;34;28;819;19700;Italy
@@ -1979,6 +1982,8 @@ Chevrolet;Blazer;2005;regular unleaded;190;6;MANUAL;four wheel drive;2;N/A;Compa
 Chevrolet;Blazer;2005;regular unleaded;190;6;MANUAL;rear wheel drive;2;N/A;Compact;2dr SUV;20;14;1385;21305;USA
 Chevrolet;Blazer;2005;regular unleaded;190;6;AUTOMATIC;rear wheel drive;4;N/A;Midsize;4dr SUV;20;15;1385;25480;USA
 Chevrolet;Blazer;2005;regular unleaded;190;6;AUTOMATIC;four wheel drive;4;N/A;Midsize;4dr SUV;18;14;1385;27480;USA
+Chevrolet;Bolt EV;2017;electric;200;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;110;128;1385;40905;USA
+Chevrolet;Bolt EV;2017;electric;200;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;110;128;1385;36620;USA
 Pontiac;Bonneville;2003;regular unleaded;205;6;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;27;17;210;26695;USA
 Pontiac;Bonneville;2003;regular unleaded;205;6;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;27;17;210;29670;USA
 Pontiac;Bonneville;2003;premium unleaded (required);240;6;AUTOMATIC;front wheel drive;4;Performance;Large;Sedan;25;16;210;34020;USA
@@ -2899,6 +2904,10 @@ Lincoln;Continental;2002;premium unleaded (required);275;8;AUTOMATIC;front wheel
 Lincoln;Continental;2017;regular unleaded;305;6;AUTOMATIC;front wheel drive;4;Luxury;Large;Sedan;26;17;61;44560;USA
 Lincoln;Continental;2017;regular unleaded;305;6;AUTOMATIC;all wheel drive;4;Luxury;Large;Sedan;24;16;61;46560;USA
 Lincoln;Continental;2017;regular unleaded;305;6;AUTOMATIC;all wheel drive;4;Luxury;Large;Sedan;24;16;61;49515;USA
+Lincoln;Continental;2017;premium unleaded (recommended);;6;AUTOMATIC;all wheel drive;4;Luxury;Large;Sedan;25;17;61;55915;USA
+Lincoln;Continental;2017;premium unleaded (recommended);;6;AUTOMATIC;front wheel drive;4;Luxury;Large;Sedan;27;18;61;62915;USA
+Lincoln;Continental;2017;premium unleaded (recommended);;6;AUTOMATIC;front wheel drive;4;Luxury;Large;Sedan;27;18;61;53915;USA
+Lincoln;Continental;2017;premium unleaded (recommended);;6;AUTOMATIC;all wheel drive;4;Luxury;Large;Sedan;25;17;61;64915;USA
 Lincoln;Continental;2017;regular unleaded;305;6;AUTOMATIC;front wheel drive;4;Luxury;Large;Sedan;26;17;61;47515;USA
 Ford;Contour SVT;1998;regular unleaded;195;6;MANUAL;front wheel drive;4;Factory Tuner,Performance;Midsize;Sedan;26;17;5657;2655;USA
 Ford;Contour SVT;1999;regular unleaded;200;6;MANUAL;front wheel drive;4;Factory Tuner,Performance;Midsize;Sedan;26;17;5657;2702;USA
@@ -3706,6 +3715,10 @@ Mercedes-Benz;E-Class;2017;premium unleaded (required);241;4;AUTOMATIC;rear whee
 Mercedes-Benz;E-Class;2017;premium unleaded (required);329;6;AUTOMATIC;rear wheel drive;2;Luxury,High-Performance;Midsize;Coupe;29;20;617;54550;Germany
 Mercedes-Benz;E-Class;2017;premium unleaded (required);402;8;AUTOMATIC;rear wheel drive;2;Luxury,High-Performance;Midsize;Coupe;26;18;617;60650;Germany
 Mercedes-Benz;E-Class;2017;premium unleaded (required);402;8;AUTOMATIC;rear wheel drive;2;Luxury,High-Performance;Midsize;Convertible;25;17;617;69100;Germany
+Volkswagen;e-Golf;2015;electric;115;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;126;873;33450;Germany
+Volkswagen;e-Golf;2015;electric;115;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;126;873;35445;Germany
+Volkswagen;e-Golf;2016;electric;115;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;126;873;28995;Germany
+Volkswagen;e-Golf;2016;electric;115;;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;126;873;35595;Germany
 Ford;E-Series Van;2012;flex-fuel (unleaded/E85);255;8;AUTOMATIC;rear wheel drive;3;Flex Fuel;Large;Cargo Van;16;12;5657;31460;USA
 Ford;E-Series Van;2012;flex-fuel (unleaded/E85);225;8;AUTOMATIC;rear wheel drive;3;Flex Fuel;Midsize;Cargo Van;17;13;5657;26630;USA
 Ford;E-Series Van;2012;flex-fuel (unleaded/E85);225;8;AUTOMATIC;rear wheel drive;3;Flex Fuel;Midsize;Cargo Van;17;13;5657;27630;USA
@@ -4189,6 +4202,10 @@ Ford;Escape;2016;premium unleaded (recommended);178;4;AUTOMATIC;front wheel driv
 Ford;Escape;2016;regular unleaded;168;4;AUTOMATIC;front wheel drive;4;Crossover;Compact;4dr SUV;31;22;5657;23590;USA
 Ford;Escape;2016;premium unleaded (recommended);178;4;AUTOMATIC;all wheel drive;4;Crossover;Compact;4dr SUV;29;22;5657;31745;USA
 Ford;Escape;2017;regular unleaded;168;4;AUTOMATIC;front wheel drive;4;Crossover;Compact;4dr SUV;29;21;5657;23600;USA
+Ford;Escape;2017;regular unleaded;;4;AUTOMATIC;front wheel drive;4;Crossover;Compact;4dr SUV;30;23;5657;29100;USA
+Ford;Escape;2017;regular unleaded;;4;AUTOMATIC;all wheel drive;4;Crossover;Compact;4dr SUV;28;22;5657;30850;USA
+Ford;Escape;2017;regular unleaded;;4;AUTOMATIC;all wheel drive;4;Crossover;Compact;4dr SUV;28;22;5657;26850;USA
+Ford;Escape;2017;regular unleaded;;4;AUTOMATIC;front wheel drive;4;Crossover;Compact;4dr SUV;30;23;5657;25100;USA
 Ford;Escort;2001;regular unleaded;130;4;MANUAL;front wheel drive;2;N/A;Compact;Coupe;31;23;5657;12340;USA
 Ford;Escort;2002;regular unleaded;130;4;MANUAL;front wheel drive;2;N/A;Compact;Coupe;31;22;5657;14315;USA
 Ford;Escort;2002;regular unleaded;130;4;MANUAL;front wheel drive;2;N/A;Compact;Coupe;31;23;5657;12815;USA
@@ -4648,6 +4665,7 @@ Ford;Festiva;1992;regular unleaded;63;4;MANUAL;front wheel drive;2;Hatchback;Com
 Ford;Festiva;1992;regular unleaded;63;4;MANUAL;front wheel drive;2;Hatchback;Compact;2dr Hatchback;37;30;5657;2000;USA
 Ford;Festiva;1993;regular unleaded;63;4;MANUAL;front wheel drive;2;Hatchback;Compact;2dr Hatchback;38;30;5657;2000;USA
 Ford;Festiva;1993;regular unleaded;63;4;MANUAL;front wheel drive;2;Hatchback;Compact;2dr Hatchback;38;30;5657;2000;USA
+Ferrari;FF;2013;premium unleaded (required);651;12;AUTOMATED_MANUAL;all wheel drive;;Exotic,High-Performance;Large;Coupe;16;11;2774;295000;Italy
 Ferrari;FF;2014;premium unleaded (required);651;12;AUTOMATED_MANUAL;all wheel drive;2;Exotic,High-Performance;Large;Coupe;16;11;2774;295000;Italy
 Ferrari;FF;2015;premium unleaded (required);651;12;AUTOMATED_MANUAL;all wheel drive;2;Exotic,High-Performance;Large;Coupe;16;11;2774;295000;Italy
 Ford;Fiesta;2015;regular unleaded;120;4;MANUAL;front wheel drive;4;N/A;Compact;Sedan;36;28;5657;18405;USA
@@ -4686,6 +4704,8 @@ Pontiac;Firebird;2002;premium unleaded (required);310;8;AUTOMATIC;rear wheel dri
 Pontiac;Firebird;2002;premium unleaded (required);310;8;AUTOMATIC;rear wheel drive;2;Hatchback,Factory Tuner,Performance;Midsize;2dr Hatchback;23;16;210;28025;USA
 Pontiac;Firebird;2002;regular unleaded;200;6;MANUAL;rear wheel drive;2;Hatchback,Performance;Midsize;2dr Hatchback;29;17;210;20050;USA
 Pontiac;Firebird;2002;regular unleaded;200;6;AUTOMATIC;rear wheel drive;2;N/A;Midsize;Convertible;28;17;210;26965;USA
+Honda;Fit EV;2013;electric;;0;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;132;2202;36625;Japan
+Honda;Fit EV;2014;electric;;0;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;105;132;2202;36625;Japan
 Honda;Fit;2015;regular unleaded;130;4;MANUAL;front wheel drive;4;Hatchback;Compact;4dr Hatchback;37;29;2202;15650;Japan
 Honda;Fit;2015;regular unleaded;130;4;MANUAL;front wheel drive;4;Hatchback;Compact;4dr Hatchback;37;29;2202;17560;Japan
 Honda;Fit;2015;regular unleaded;130;4;AUTOMATIC;front wheel drive;4;Hatchback;Compact;4dr Hatchback;38;32;2202;19925;Japan
@@ -4764,9 +4784,11 @@ Ford;Focus;2015;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Hatchb
 Ford;Focus;2015;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;40;27;5657;23170;USA
 Ford;Focus;2015;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;36;26;5657;17170;USA
 Ford;Focus;2015;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;40;27;5657;23670;USA
+Ford;Focus;2015;electric;;0;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;99;110;5657;29170;USA
 Ford;Focus;2016;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;36;26;5657;18515;USA
 Ford;Focus;2016;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;40;27;5657;23725;USA
 Ford;Focus;2016;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;40;27;5657;23225;USA
+Ford;Focus;2016;electric;;0;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;99;110;5657;29170;USA
 Ford;Focus;2016;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;36;26;5657;19015;USA
 Ford;Focus;2016;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;36;26;5657;17225;USA
 Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;40;27;5657;21675;USA
@@ -4775,6 +4797,7 @@ Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;MANUAL;front wheel drive;4;Flex F
 Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;40;27;5657;24075;USA
 Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;40;27;5657;23575;USA
 Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Flex Fuel;Compact;Sedan;40;27;5657;21175;USA
+Ford;Focus;2017;electric;;0;DIRECT_DRIVE;front wheel drive;4;Hatchback;Compact;4dr Hatchback;99;110;5657;29120;USA
 Ford;Focus;2017;flex-fuel (unleaded/E85);160;4;AUTOMATED_MANUAL;front wheel drive;4;Hatchback,Flex Fuel;Compact;4dr Hatchback;40;27;5657;19765;USA
 Suzuki;Forenza;2006;regular unleaded;126;4;AUTOMATIC;front wheel drive;4;N/A;Compact;Wagon;27;19;481;16699;Japan
 Suzuki;Forenza;2006;regular unleaded;126;4;MANUAL;front wheel drive;4;N/A;Compact;Sedan;28;20;481;13799;Japan
@@ -4890,6 +4913,12 @@ Land Rover;Freelander;2004;regular unleaded;174;6;AUTOMATIC;all wheel drive;4;Cr
 Land Rover;Freelander;2004;regular unleaded;174;6;AUTOMATIC;all wheel drive;4;Crossover,Luxury;Compact;4dr SUV;19;16;258;25330;United Kingdom
 Land Rover;Freelander;2005;regular unleaded;174;6;AUTOMATIC;all wheel drive;4;Crossover,Luxury;Compact;4dr SUV;19;16;258;26830;United Kingdom
 Land Rover;Freelander;2005;regular unleaded;174;6;AUTOMATIC;all wheel drive;2;Crossover,Luxury;Compact;2dr SUV;19;16;258;26830;United Kingdom
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;22;16;5657;28030;USA
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;22;16;5657;23930;USA
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Cargo Minivan;22;16;5657;21630;USA
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;22;16;5657;26530;USA
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;21;16;5657;29030;USA
+Ford;Freestar;2005;regular unleaded;;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;21;16;5657;32755;USA
 Ford;Freestar;2006;regular unleaded;193;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Cargo Minivan;22;16;5657;19650;USA
 Ford;Freestar;2006;regular unleaded;201;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;21;15;5657;29575;USA
 Ford;Freestar;2006;regular unleaded;193;6;AUTOMATIC;front wheel drive;4;N/A;Midsize;Passenger Minivan;22;16;5657;23655;USA
@@ -5748,6 +5777,9 @@ Lamborghini;Huracan;2015;premium unleaded (required);610;10;AUTOMATED_MANUAL;all
 Lamborghini;Huracan;2016;premium unleaded (required);610;10;AUTOMATED_MANUAL;all wheel drive;2;Exotic,High-Performance;Compact;Coupe;21;14;1158;238500;Italy
 Lamborghini;Huracan;2016;premium unleaded (required);610;10;AUTOMATED_MANUAL;all wheel drive;2;Exotic,High-Performance;Compact;Convertible;20;14;1158;262350;Italy
 Lamborghini;Huracan;2016;premium unleaded (required);580;10;AUTOMATED_MANUAL;rear wheel drive;2;Exotic,High-Performance;Compact;Coupe;21;14;1158;199800;Italy
+Mitsubishi;i-MiEV;2014;electric;;;DIRECT_DRIVE;rear wheel drive;4;Hatchback;Compact;4dr Hatchback;99;126;436;22995;Japan
+Mitsubishi;i-MiEV;2016;electric;66;;DIRECT_DRIVE;rear wheel drive;4;Hatchback;Compact;4dr Hatchback;99;126;436;22995;Japan
+Mitsubishi;i-MiEV;2017;electric;66;;DIRECT_DRIVE;rear wheel drive;4;Hatchback;Compact;4dr Hatchback;102;121;436;22995;Japan
 Infiniti;I30;1999;regular unleaded;190;6;AUTOMATIC;front wheel drive;4;Luxury;Midsize;Sedan;25;18;190;2288;Japan
 Infiniti;I30;1999;regular unleaded;190;6;MANUAL;front wheel drive;4;Luxury,Performance;Midsize;Sedan;24;19;190;2433;Japan
 Infiniti;I30;2000;regular unleaded;227;6;AUTOMATIC;front wheel drive;4;Luxury,Performance;Midsize;Sedan;25;17;190;2648;Japan
@@ -5792,16 +5824,22 @@ Chevrolet;Impala Limited;2016;flex-fuel (unleaded/E85);300;6;AUTOMATIC;front whe
 Chevrolet;Impala Limited;2016;flex-fuel (unleaded/E85);300;6;AUTOMATIC;front wheel drive;4;Flex Fuel;Large;Sedan;30;18;1385;25830;USA
 Chevrolet;Impala;2015;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;21;1385;34465;USA
 Chevrolet;Impala;2015;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;21;1385;27060;USA
+Chevrolet;Impala;2015;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;40660;USA
 Chevrolet;Impala;2015;flex-fuel (unleaded/E85);305;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;29;19;1385;35440;USA
 Chevrolet;Impala;2015;flex-fuel (unleaded/E85);305;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;29;19;1385;30285;USA
 Chevrolet;Impala;2015;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;21;1385;29310;USA
 Chevrolet;Impala;2015;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;21;1385;27060;USA
+Chevrolet;Impala;2015;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;37535;USA
+Chevrolet;Impala;2016;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;40810;USA
 Chevrolet;Impala;2016;flex-fuel (unleaded/E85);305;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;29;19;1385;35540;USA
+Chevrolet;Impala;2016;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;37570;USA
 Chevrolet;Impala;2016;flex-fuel (unleaded/E85);305;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;29;19;1385;30435;USA
 Chevrolet;Impala;2016;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;22;1385;27095;USA
 Chevrolet;Impala;2016;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;22;1385;29460;USA
 Chevrolet;Impala;2016;regular unleaded;195;4;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;31;22;1385;27095;USA
 Chevrolet;Impala;2017;flex-fuel (unleaded/E85);305;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;28;19;1385;35645;USA
+Chevrolet;Impala;2017;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;37675;USA
+Chevrolet;Impala;2017;flex-fuel (unleaded/natural gas);;6;AUTOMATIC;front wheel drive;4;Flex Fuel,Performance;Large;Sedan;25;17;1385;40915;USA
 Chrysler;Imperial;1991;regular unleaded;150;6;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;23;15;1013;2000;USA
 Chrysler;Imperial;1992;regular unleaded;150;6;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;23;16;1013;2000;USA
 Chrysler;Imperial;1993;regular unleaded;150;6;AUTOMATIC;front wheel drive;4;N/A;Large;Sedan;24;17;1013;2000;USA

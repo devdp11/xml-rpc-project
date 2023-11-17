@@ -1,6 +1,7 @@
 import csv
-import xml.dom.minidom as md
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as md
+from lxml import etree
 from csv import DictReader
 
 from entities.country import Country
@@ -196,14 +197,48 @@ class CSVtoXMLConverter:
         root_el.append(categories_el)
         
         root_el.append(vehicles_el)
-
+        
         return root_el
 
-    def to_xml_str(self):
-        xml_str = ET.tostring(self.to_xml(), encoding='utf8', method='xml').decode()
-        dom = md.parseString(xml_str)
-        return dom.toprettyxml()
+    def to_xml_str(self, file_path=None, xsd_path=None):
+        xml_tree = self.to_xml()
 
-    def save_xml(self, filename):
-        with open(filename, 'w') as file:
-            file.write(self.to_xml_str())
+        xml_str = ET.tostring(xml_tree, encoding='utf-8', method='xml').decode()
+        dom = md.parseString(xml_str)
+
+        if xsd_path:
+            try:
+                xml_str = dom.toprettyxml()
+                if self.validate_xml_with_xsd(xml_str, xsd_path):
+                    if file_path:
+                        with open(file_path, 'w', encoding='utf-8') as file:
+                            file.write(xml_str)
+
+                    success_message = f"Validation sucessfully made! File '{file_path}' was sucessfully created."
+                    print(success_message)
+                    return xml_str
+                else:
+                    error_message = "Validation failed. XML won't be generated"
+                    print(error_message)
+                    return None, error_message
+            except etree.DocumentInvalid as e:
+                error_message = f"Validation error: {e}!"
+                print(error_message)
+                return None
+        else:
+            return dom.toprettyxml(), None
+
+    def validate_xml_with_xsd(self, xml_str, xsd_path):
+        try:
+            xsd_tree = etree.parse(xsd_path)
+            schema = etree.XMLSchema(xsd_tree)
+
+            xml_doc = etree.fromstring(xml_str)
+
+            schema.assertValid(xml_doc)
+
+            print("Validation sucessfully made!")
+            return True
+        except etree.DocumentInvalid as e:
+            print(f"Validation error: {e}!")
+            return False
