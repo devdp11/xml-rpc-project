@@ -21,14 +21,4 @@ class CSVReader:
                         after_create(entities[e], row)
         return entities
 
-csv_reader = CSVReader("data/data.csv")
-
-# ---------------- PRINT Entidades CSV  ----------------#
-
-for row in csv_reader.loop():
-    print(row)
-
-
-entities = csv_reader.read_entities('make', lambda row: row, after_create=None)
-for make, entity in entities.items():
-    print(f'Make: {make}, Entity: {entity}')
+csv_reader = CSVReader(".data/data.csv")

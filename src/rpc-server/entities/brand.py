@@ -2,9 +2,10 @@ import xml.etree.ElementTree as ET
 from entities.country import Country
 
 class Brand:
+    counter = 0  # Mova a declaração do contador para fora do construtor
 
     def __init__(self, name: str, country: Country):
-        Brand.counter += 1
+        Brand.counter += 1  # Incrementar o contador ao criar uma nova instância
         self._id = Brand.counter
         self._name = name
         self._country = country
@@ -12,6 +13,9 @@ class Brand:
 
     def add_model(self, model):
         self._models.append(model)
+
+    def get_id(self):
+        return self._id
 
     def to_xml(self):
         el = ET.Element("Brand")
@@ -29,5 +33,3 @@ class Brand:
 
     def __str__(self):
         return f"{self._name} ({self._id})"
-
-Brand.counter = 0

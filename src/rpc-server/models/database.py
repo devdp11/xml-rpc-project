@@ -11,7 +11,7 @@ try:
                                   database="is")
 
 except (Exception, psycopg2.Error) as error:
-    print("Failed to fetch data", error)
+    print("\nFailed to fetch data", error)
 
 finally:
     if connection:

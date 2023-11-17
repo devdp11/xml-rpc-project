@@ -6,7 +6,10 @@ class Model:
         Model.counter += 1
         self._id = Model.counter
         self._name = name
-
+    
+    def get_id(self):
+        return self._id
+    
     def to_xml(self):
         el = ET.Element("Model")
         el.set("id", str(self._id))
