@@ -29,7 +29,7 @@ class Vehicle:
         vehicle_element.set("id", str(self._id))
         vehicle_element.set("year", self._year)
 
-        brand_ref_element = ET.SubElement(vehicle_element, "Car_Model")
+        brand_ref_element = ET.SubElement(vehicle_element, "Car_Info")
         brand_ref_element.set("brand_ref", str(self._brand.get_id()))
         brand_ref_element.set("model_ref", str(self._model.get_id()))
 
@@ -47,9 +47,6 @@ class Vehicle:
 
         engine_cylinders_element =  ET.SubElement(vehicle_element, "Engine_Cylinders")
         engine_cylinders_element.set("engine_cylinders", self._engine_cylinders)
-        
-        transmission_element =  ET.SubElement(vehicle_element, "Engine_Fuel_Type")
-        transmission_element.set("ref", str(self._transmission_type.get_id()))
 
         driven_wheels_element =  ET.SubElement(vehicle_element, "Driven_Wheels")
         driven_wheels_element.set("ref", str(self._driven_wheels.get_id()))
@@ -57,15 +54,13 @@ class Vehicle:
         number_of_doors_element =  ET.SubElement(vehicle_element, "Number_Of_Doors")
         number_of_doors_element.set("numbers_doors", self._number_of_doors)
 
-        market_category_element = ET.SubElement(vehicle_element, "Market_category")
+        market_category_element = ET.SubElement(vehicle_element, "Market_Categories")
         for category_item in self._market_category:
             category_item_element = ET.SubElement(market_category_element, "Market_category_item")
 
-            # Verificar se category_item é uma instância de MarketCategoryItem
             if isinstance(category_item, MarketCategoryItem):
                 category_item_element.set("ref", str(category_item.get_id()))
             else:
-                # Se não for uma instância de MarketCategoryItem, assumir que é uma string
                 category_item_element.set("Name", category_item)
 
         size_element =  ET.SubElement(vehicle_element, "Vehicle_Size")

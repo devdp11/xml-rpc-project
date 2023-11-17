@@ -19,20 +19,16 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
         print("\nExiting gracefully")
         sys.exit(0)
 
+    csv_file = "data/data.csv"
+    xml_file = "data/data.xml"
+
+    converter = CSVtoXMLConverter(csv_file)
+    
+    converter.save_xml(xml_file)
+
     # Signals
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
-
-    try:
-        if hasattr(signal, 'SIGHUP'):
-            signal.signal(signal.SIGHUP, signal_handler)
-    except AttributeError:
-        print("\nSIGHUP not supported on this platform")
-
-    converter = CSVtoXMLConverter("data/data.csv")
-    xml_str = converter.to_xml_str()
-    converter.save_to_file('data.xml')
-    print(xml_str)
-
+    
     print("\nStarting the RPC Server...")
     server.serve_forever()

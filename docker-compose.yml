@@ -25,23 +25,5 @@ services:
     depends_on:
       - rpc-server
 
-  db-access:
-    container_name: is-db-access
-    build: docker/images/python
-    volumes:
-      - "./src/rpc-server/db-access:/app"
-      - "./docker/volumes/data:/data"
-    depends_on:
-      - rpc-server
-
-  xml-generation:
-    container_name: is-xml-generation
-    build: docker/images/python
-    volumes:
-      - "./src/rpc-server/xml-generation:/app"
-      - "./docker/volumes/data:/data"
-    depends_on:
-      - rpc-server
-
 volumes:
   postgres_data:

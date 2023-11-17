@@ -194,6 +194,6 @@ class CSVtoXMLConverter:
         dom = md.parseString(xml_str)
         return dom.toprettyxml()
 
-    def save_to_file(self, filename="data.xml"):
+    def save_xml(self, filename):
         with open(filename, 'w') as file:
             file.write(self.to_xml_str())

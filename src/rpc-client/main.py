@@ -4,6 +4,3 @@ print("connecting to server...")
 server = xmlrpc.client.ServerProxy('http://is-rpc-server:9000')
 
 string = "hello world"
-
-print(f" > {server.string_reverse(string)}")
-print(f" > {server.string_length(string)}")
