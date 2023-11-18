@@ -1,6 +1,6 @@
 import csv
 
-def remove_rows_with_empty_columns(input_csv, output_csv, delimiter=';'):
+def remove_rows(input_csv, output_csv, delimiter=';'):
     with open(input_csv, 'r', newline='') as infile, open(output_csv, 'w', newline='') as outfile:
         reader = csv.DictReader(infile, delimiter=delimiter)
         fieldnames = reader.fieldnames
@@ -14,4 +14,4 @@ def remove_rows_with_empty_columns(input_csv, output_csv, delimiter=';'):
             if all(filtered_row.values()):
                 writer.writerow(filtered_row)
 
-remove_rows_with_empty_columns('../data_all.csv', '../data.csv')
+remove_rows('../dataset_wt_country.csv', '../data.csv')

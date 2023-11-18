@@ -12,6 +12,8 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as server:
     server.register_introspection_functions()
 
+    database = Database()
+
     def signal_handler(signum, frame):
         print("\nReceived signal")
         server.server_close()
@@ -24,7 +26,12 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     xsd_file = "/data/schemas/data.xsd"
 
     converter = CSVtoXMLConverter(csv_file)
-    converter.to_xml_str(xml_file,xsd_file)
+    file = converter.to_xml_str(xml_file, xsd_file)
+
+    insert_query = "INSERT INTO public.imported_documents (file_name, xml) VALUES (%s, %s)"
+    data = (xml_file, file)
+    database.insert(insert_query, data)
+
 
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)

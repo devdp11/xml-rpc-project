@@ -222,8 +222,6 @@ class CSVtoXMLConverter:
                     print(error_message)
                     return None, error_message
             except etree.DocumentInvalid as e:
-                error_message = f"\nValidation error: {e}!"
-                print(error_message)
                 return None
         else:
             return dom.toprettyxml(), None
@@ -234,7 +232,7 @@ class CSVtoXMLConverter:
             schema = etree.XMLSchema(xsd_tree)
             xml_doc = etree.fromstring(xml_str)
             schema.assertValid(xml_doc)
-
             return True
         except etree.DocumentInvalid as e:
+            print(f"\nValidation error: {e}!")
             return False
