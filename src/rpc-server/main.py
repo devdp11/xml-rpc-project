@@ -3,7 +3,7 @@ import sys
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from functions.csv_to_xml_converter import CSVtoXMLConverter
-from models.database import Database
+from database.database import Database
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
