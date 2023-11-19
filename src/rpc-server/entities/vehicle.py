@@ -28,16 +28,8 @@ class Vehicle:
         vehicle_element = ET.Element("Car")
         vehicle_element.set("id", str(self._id))
         vehicle_element.set("year", self._year)
-
-        brand_ref_element = ET.SubElement(vehicle_element, "Car_Info")
-        brand_ref_element.set("brand_ref", str(self._brand.get_id()))
-        brand_ref_element.set("model_ref", str(self._model.get_id()))
-
-        ##model_ref_element = ET.SubElement(vehicle_element, "Model")
-        ##model_ref_element.set("ref", str(self._model.get_id()))
-
-        ##year_element = ET.SubElement(vehicle_element, "Year")
-        ##year_element.set("year", self._year)
+        vehicle_element.set("brand_ref", str(self._brand.get_id()))
+        vehicle_element.set("model_ref", str(self._model.get_id()))
 
         engine_fuel_type_element =  ET.SubElement(vehicle_element, "Engine_Fuel_Type")
         engine_fuel_type_element.set("ref", str(self._engine_fuel_type.get_id()))
