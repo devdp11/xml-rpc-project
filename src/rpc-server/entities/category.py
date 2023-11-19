@@ -14,5 +14,11 @@ class MarketCategoryItem:
         el.set("Name", self._name)
         return el
 
+    def get_id(self):
+        return self._id
+
+    def get_name(self):
+        return self._name
+
     def __str__(self):
         return f"Market Category {self._id}: {self._name}"
