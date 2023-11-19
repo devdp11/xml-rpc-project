@@ -104,7 +104,7 @@ class CSVtoXMLConverter:
         # read categories
         categories = self.csv_reader.read_entities(
             attr="Market Category",
-            builder=lambda row: [MarketCategoryItem(cat) for cat in row["Market Category"].split(",")] if row["Market Category"] else [],
+            builder=lambda row: row["Market Category"].split(",") if row["Market Category"] else [],
             after_create=None
         )
 
@@ -169,17 +169,14 @@ class CSVtoXMLConverter:
 
         categories_el = ET.Element("Categories")
         unique_categories = set()
-        category_id_counter = 1
-
         for category_list in categories.values():
-            for category_item in category_list:
-                category_name = category_item.get_name()
+            for category_name in category_list:
                 if category_name not in unique_categories:
-                    category_el = category_item.to_xml()
-                    category_el.set("id", str(category_id_counter))
-                    unique_categories.add(category_name)
-                    category_id_counter += 1
+                    category_el = ET.Element("market_category")
+                    category_el.set("id", str(len(unique_categories) + 1))
+                    category_el.set("Name", category_name)
                     categories_el.append(category_el)
+                    unique_categories.add(category_name)
 
         vehicles_el = ET.Element("Vehicles")
         all_vehicles = []

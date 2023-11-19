@@ -55,13 +55,21 @@ class Vehicle:
         number_of_doors_element.set("numbers_doors", self._number_of_doors)
 
         market_category_element = ET.SubElement(vehicle_element, "Market_Categories")
+        unique_categories = {}
+
         for category_item in self._market_category:
-            category_item_element = ET.SubElement(market_category_element, "Market_category_item")
+            category_item_element = ET.SubElement(market_category_element, "market_category")
 
             if isinstance(category_item, MarketCategoryItem):
-                category_item_element.set("ref", str(category_item.get_id()))
+                category_name = category_item.get_name()
+                if category_name not in unique_categories:
+                    unique_categories[category_name] = len(unique_categories) + 1
+
+                category_item_element.set("ref", str(unique_categories[category_name]))
             else:
-                category_item_element.set("Name", category_item)
+                market_category_item = MarketCategoryItem(category_item)
+                market_category_item_a = str(market_category_item.get_id()) + " - " + str(market_category_item.get_name())  
+                category_item_element.set("ref", market_category_item_a)
 
         size_element =  ET.SubElement(vehicle_element, "Vehicle_Size")
         size_element.set("ref", str(self._vehicle_size.get_id()))
@@ -85,6 +93,5 @@ class Vehicle:
 
     def __str__(self):
         return f"Car {self._id}: {self._brand} {self._model} ({self._year})"
-
 
 Vehicle.counter = 0
