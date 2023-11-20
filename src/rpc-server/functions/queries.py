@@ -14,6 +14,7 @@ class QueryFunctions:
             database.disconnect()
     
     def fetch_brands(self):
+        database = Database()
         result_brands = []
 
         results = database.selectAll("SELECT unnest(xpath('//Brands/Brand/@name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
@@ -26,17 +27,17 @@ class QueryFunctions:
         return result_brands
 
     def fetch_models(self):
-        query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
-        data = ('/data/data.xml',)
-        result = self._execute_query(query, data)
+        database = Database()
+        result_models = []
 
-        if result is not None:
-            xml_data = result[0]
-            root = etree.fromstring(xml_data)
-            models = root.xpath('/Data/Brands/Brand/Models/Model')
-            return [model.get('name') for model in models]
-        else:
-            return []
+        results = database.selectAll("SELECT unnest(xpath('//Brands/Brand/Models/Model/@name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
+        database.disconnect()
+
+        for model in results:
+            if not model in result_models:
+                result_models.append(model)
+
+        return result_models
 
     def fetch_market_categories(self):
         query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
