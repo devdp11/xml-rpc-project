@@ -89,16 +89,24 @@ class QueryFunctions:
 
             detailed_info = []
             for vehicle in vehicles:
-                vehicle_info = {
-                    "id": vehicle.get('id'),
-                    "brand": vehicle.find('./Brand').get('name'),
-                    "model": vehicle.find('./Model').get('name'),
-                    "year": vehicle.get('year'),
-                    "msrp": vehicle.find('./Msrp').get('value'),
-                    "category": category,
-                    "fuel_type": vehicle.find('./Engine_Fuel_Type').get('ref')
-                }
-                detailed_info.append(vehicle_info)
+                vehicle_id = vehicle.get('id')
+                brand_element = vehicle.find('./Brand')
+                model_element = vehicle.find('./Model')
+                year = vehicle.get('year')
+                msrp_element = vehicle.find('./Msrp')
+                fuel_type_element = vehicle.find('./Engine_Fuel_Type')
+
+                if all([vehicle_id, brand_element, model_element, year, msrp_element, fuel_type_element]):
+                    vehicle_info = {
+                        "id": vehicle_id,
+                        "brand": brand_element.get('name'),
+                        "model": model_element.get('name'),
+                        "year": year,
+                        "msrp": msrp_element.get('value'),
+                        "category": category,
+                        "fuel_type": fuel_type_element.get('ref')
+                    }
+                    detailed_info.append(vehicle_info)
 
             return detailed_info
         else:

@@ -267,7 +267,14 @@
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute type="xs:int" name="id" use="optional"/>
-                  <xs:attribute type="xs:short" name="year" use="optional"/>
+                  <xs:attribute name="year" use="optional">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:short">
+                      <xs:minInclusive value="1900"/>
+                      <xs:maxInclusive value="2023"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
                   <xs:attribute type="xs:int" name="brand_ref" use="optional"/>
                   <xs:attribute type="xs:int" name="model_ref" use="optional"/>
                 </xs:complexType>
