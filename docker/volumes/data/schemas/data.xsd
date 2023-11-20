@@ -164,7 +164,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:short" name="engine_hp" use="optional"/>
+                            <xs:attribute type="xs:short" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -173,7 +173,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="engine_cylinders" use="optional"/>
+                            <xs:attribute type="xs:int" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -191,7 +191,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="numbers_doors" use="optional"/>
+                            <xs:attribute type="xs:int" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -233,7 +233,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="highway_mpg" use="optional"/>
+                            <xs:attribute type="xs:int" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -242,7 +242,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="size_mpg" use="optional"/>
+                            <xs:attribute type="xs:int" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -251,7 +251,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:short" name="popularity" use="optional"/>
+                            <xs:attribute type="xs:short" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
@@ -260,7 +260,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="msrp" use="optional"/>
+                            <xs:attribute type="xs:int" name="value" use="optional"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>

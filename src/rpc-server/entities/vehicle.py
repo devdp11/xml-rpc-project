@@ -35,16 +35,16 @@ class Vehicle:
         engine_fuel_type_element.set("ref", str(self._engine_fuel_type.get_id()))
 
         engine_hp_element =  ET.SubElement(vehicle_element, "Engine_HP")
-        engine_hp_element.set("engine_hp", self._engine_hp)
+        engine_hp_element.set("value", self._engine_hp)
 
         engine_cylinders_element =  ET.SubElement(vehicle_element, "Engine_Cylinders")
-        engine_cylinders_element.set("engine_cylinders", self._engine_cylinders)
+        engine_cylinders_element.set("value", self._engine_cylinders)
 
         driven_wheels_element =  ET.SubElement(vehicle_element, "Driven_Wheels")
         driven_wheels_element.set("ref", str(self._driven_wheels.get_id()))
 
         number_of_doors_element =  ET.SubElement(vehicle_element, "Number_Of_Doors")
-        number_of_doors_element.set("numbers_doors", self._number_of_doors)
+        number_of_doors_element.set("value", self._number_of_doors)
 
         market_category_element = ET.SubElement(vehicle_element, "Market_Categories")
         unique_categories = {}
@@ -70,16 +70,16 @@ class Vehicle:
         style_element.set("ref", str(self._driven_wheels.get_id()))
 
         highway_mpg_element =  ET.SubElement(vehicle_element, "Highway_mpg")
-        highway_mpg_element.set("highway_mpg", self._highway_mpg)
+        highway_mpg_element.set("value", self._highway_mpg)
 
         city_mpg_element =  ET.SubElement(vehicle_element, "City_mpg")
-        city_mpg_element.set("size_mpg", self._city_mpg)
+        city_mpg_element.set("value", self._city_mpg)
 
         popularity_element =  ET.SubElement(vehicle_element, "Popularity")
-        popularity_element.set("popularity", self._popularity)
+        popularity_element.set("value", self._popularity)
 
         msrp_element =  ET.SubElement(vehicle_element, "Msrp")
-        msrp_element.set("msrp", self._msrp)
+        msrp_element.set("value", self._msrp)
 
         return vehicle_element
 
