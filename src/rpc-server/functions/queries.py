@@ -12,19 +12,18 @@ class QueryFunctions:
             return result
         finally:
             database.disconnect()
-
+    
     def fetch_brands(self):
-        query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
-        data = ('/data/data.xml',)
-        result = self._execute_query(query, data)
+        result_brands = []
 
-        if result is not None:
-            xml_data = result[0]
-            root = etree.fromstring(xml_data)
-            brands = root.xpath('/Data/Brands/Brand')
-            return [brand.get('name') for brand in brands]
-        else:
-            return []
+        results = database.selectAll("SELECT unnest(xpath('//Brands/Brand/@name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
+        database.disconnect()
+
+        for brand in results:
+            if not brand in result_brands:
+                result_brands.append(brand)
+
+        return result_brands
 
     def fetch_models(self):
         query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
@@ -54,7 +53,7 @@ class QueryFunctions:
 
     def fetch_car_above_year(self, year):
         try:
-            year = int(year)  # Certifique-se de converter o ano para inteiro
+            year = int(year)  
         except ValueError:
             return "Invalid year. Please enter a valid integer year."
 

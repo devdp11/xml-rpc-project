@@ -82,14 +82,19 @@ def main():
 
         if option == '1':
             list_brands()
+            continue  
         if option == '2':
             list_models()
+            continue
         if option == '3':
             list_market_categories()
+            continue
         if option == '4':
             list_cars_above_year()
+            continue
         if option == '5':
             list_vehicles_by_category(category="1 - Factory Tuner")
+            continue
         elif option == '0':
             print("\nLeaving program!")
             break
