@@ -4,14 +4,6 @@ from database.database import Database
 class QueryFunctions:
     def __init__(self):
         self.database = Database()
-
-    def _execute_query(self, query, data):
-        database = Database()
-        try:
-            result = database.selectOne(query, data)
-            return result
-        finally:
-            database.disconnect()
     
     def fetch_brands(self):
         database = Database()
@@ -39,79 +31,61 @@ class QueryFunctions:
 
         return result_models
 
+
     def fetch_market_categories(self):
-        query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
-        data = ('/data/data.xml',)
-        result = self._execute_query(query, data)
-
-        if result is not None:
-            xml_data = result[0]
-            root = etree.fromstring(xml_data)
-            categories = root.xpath('/Data/Categories/market_category')
-            return [category.get('Name') for category in categories]
-        else:
-            return []
-
-    def fetch_car_above_year(self, year):
-        try:
-            year = int(year)  
-        except ValueError:
-            return "Invalid year. Please enter a valid integer year."
-
-        query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
-        data = ('/data/data.xml',)
-        result = self._execute_query(query, data)
-
-        if result is not None:
-            xml_data = result[0]
-            root = etree.fromstring(xml_data)
-            vehicles = root.xpath('/Data/Vehicles/Car[@year > $year]', year=year)
-            return [vehicle.get('id') for vehicle in vehicles]
-        else:
-            return []
-    
-    def fetch_vehicles_by_category(self, category):
-        try:
-            category = str(category)
-        except ValueError:
-            return "Invalid category. Please enter a valid string category."
-
         database = Database()
-        query = "SELECT xml FROM public.imported_documents WHERE file_name = %s"
-        data = ('/data/data.xml',)
-        result = database.selectOne(query, data)
+        result_models = []
+
+        results = database.selectAll("SELECT unnest(xpath('//Categories/market_category/@name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
         database.disconnect()
 
-        if result is not None:
-            xml_data = result[0]
-            root = etree.fromstring(xml_data)
-            vehicles = root.xpath(f'/Data/Vehicles/Car[Market_Categories/market_category[@ref="{category}"]]')
+        for model in results:
+            if not model in result_models:
+                result_models.append(model)
 
-            detailed_info = []
-            for vehicle in vehicles:
-                vehicle_id = vehicle.get('id')
-                brand_element = vehicle.find('./Brand')
-                model_element = vehicle.find('./Model')
-                year = vehicle.get('year')
-                msrp_element = vehicle.find('./Msrp')
-                fuel_type_element = vehicle.find('./Engine_Fuel_Type')
+        return result_models
 
-                if all([vehicle_id, brand_element, model_element, year, msrp_element, fuel_type_element]):
-                    vehicle_info = {
-                        "id": vehicle_id,
-                        "brand": brand_element.get('name'),
-                        "model": model_element.get('name'),
-                        "year": year,
-                        "msrp": msrp_element.get('value'),
-                        "category": category,
-                        "fuel_type": fuel_type_element.get('ref')
-                    }
-                    detailed_info.append(vehicle_info)
+    def fetch_most_valuable_cars(self):
+        database = Database()
 
-            return detailed_info
-        else:
-            return []
+        query = """
+        WITH car_data AS (
+            SELECT
+                unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
+                unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
+                unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref,
+                unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
+            FROM
+                imported_documents
+        )
+        SELECT
+            id,
+            brand_ref,
+            model_ref,
+            msrp
+        FROM
+            car_data
+        WHERE
+            msrp IS NOT NULL
+        ORDER BY
+            msrp::numeric DESC
+        LIMIT 10;
+        """
 
-    def fetch_model_by_brand(brand):
-        pass
-        
+        results = database.selectAllArray(query)
+        database.disconnect()
+
+        formatted_cars = [
+            {
+                "id": car.get("id", "N/A"),
+                "brand_ref": car.get("brand_ref", "N/A"),
+                "model_ref": car.get("model_ref", "N/A"),
+                "msrp": car.get("msrp", "N/A"),
+            }
+            for car in results
+        ]
+
+        return formatted_cars
+
+
+    

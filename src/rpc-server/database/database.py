@@ -56,3 +56,11 @@ class Database:
             cursor.execute(query, data)
             result = cursor.fetchone()
         return result
+
+    def selectAllArray(self, query):
+        self.connect()
+        with self.cursor as cursor:
+            cursor.execute(query)
+            columns = [desc[0] for desc in cursor.description]
+            result = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        return result
