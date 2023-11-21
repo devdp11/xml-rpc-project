@@ -39,6 +39,10 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
 
     """ FUNCTION REGISTRATION """
     server.register_function(document.import_document_database)
+    server.register_function(document.list_documents)
+    server.register_function(document.remove_documents)
+
+
     server.register_function(queries.fetch_brands)
     server.register_function(queries.fetch_models)
     server.register_function(queries.fetch_market_categories)

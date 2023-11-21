@@ -69,7 +69,7 @@ class QueryFunctions:
             msrp IS NOT NULL
         ORDER BY
             msrp::numeric DESC
-        LIMIT 10;
+        LIMIT 20;
         """
 
         results = database.selectAllArray(query)

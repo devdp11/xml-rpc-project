@@ -7,7 +7,7 @@ print("\nconnecting to server")
 server = xmlrpc.client.ServerProxy('http://is-rpc-server:9000')
 print("\nconnected to server")
 
-def import_document():
+def importDocument():
     try:
         xml_file_path = input("Enter the path to the XML file (/data/[filename]): ")
 
@@ -20,6 +20,41 @@ def import_document():
 
         result = server.import_document_database(xml_content, xml_file_path)
         print(result)
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+def listDocuments():
+    search_result = server.list_documents()
+    if len(search_result) > 0:
+        print("Database documents:")
+        for number, file in enumerate(search_result, start=1):
+            print(f" {number} - {file[1]}")
+        return len(search_result)
+    else:
+        print("Empty database!")
+        return 0
+
+def removeDocument():
+    try:
+        documents = listDocuments()
+
+        if documents == 0:
+            print("No documents on database")
+            return
+        else:
+            file_name = input("Write the file name: ")
+
+            if not file_name:
+                print("Invalid file name.")
+                return
+
+            result = server.remove_documents(file_name)
+
+            if "Document removed successfully." in result:
+                print(result)
+            else:
+                print("Document not found or already removed.")
 
     except Exception as e:
         print(f"Error: {e}")
@@ -88,7 +123,13 @@ def main():
             option = input("Choose an option: ")
 
             if option == '1':
-                import_document()
+                importDocument()
+                continue
+            if option == '2':
+                listDocuments()
+                continue
+            if option == '3':
+                removeDocument()
                 continue
 
         elif option == '2':
