@@ -106,6 +106,37 @@ def list_most_valuable_cars():
             print("No valuable cars found.")
     except Exception as e:
         print(f"Error: {e}")
+        
+def list_models_of_brand(brand_name):
+    try:
+        models = server.fetch_models_by_brand(brand_name)
+        if models:
+            print(f"\nList of Models for Brand {brand_name}:")
+            for model in models:
+                print(f"- {model}")
+        else:
+            print(f"No models found for the brand {brand_name}.")
+    except Exception as e:
+        print(f"Error: {e}")
+        
+def list_vehicles_by_category():
+    try:
+        category = input("Enter the market category: ")
+        vehicles = server.fetch_vehicles_by_category(category)
+
+        if vehicles:
+            print(f"\nVehicles in the category {category}:")
+            for vehicle in vehicles:
+                print(f"- Car ID: {vehicle['id']}, Year: {vehicle['year']}, Brand: {vehicle['brand_name']}, Model: {vehicle['model_name']}, MSRP: {vehicle['msrp']}")
+        else:
+            print(f"No vehicles found in the category {category}.")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+
+
 
 
 def main():
@@ -139,6 +170,8 @@ def main():
             print("2 - Select all models ")
             print("3 - Select market categories ")
             print("4 - Most valuable cars")
+            print("5 - List Models By Brand")
+            print("6 - List Cars By Categories")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -152,6 +185,13 @@ def main():
                 continue
             if option == '4':
                 list_most_valuable_cars()
+                continue
+            if option == '5':
+                brand_name_input = input("Enter the brand name: ")
+                list_models_of_brand(brand_name_input)  
+                continue
+            if option == '6':
+                list_vehicles_by_category() 
                 continue
 
         elif option == '0':
