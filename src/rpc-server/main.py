@@ -5,7 +5,7 @@ from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 
 import functions.documents as document
-from functions.queries import QueryFunctions
+import functions.queries as queries
 from functions.csv_to_xml_converter import CSVtoXMLConverter
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -14,7 +14,6 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 
 with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as server:
     server.register_introspection_functions()
-    queries = QueryFunctions()
 
     def signal_handler(signum, frame):
         print("\nReceived signal")
@@ -47,6 +46,7 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(queries.fetch_models)
     server.register_function(queries.fetch_market_categories)
     server.register_function(queries.fetch_most_valuable_cars)
+
 
 
     print("\nStarting the RPC Server...")

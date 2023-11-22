@@ -95,17 +95,18 @@ def list_market_categories():
     except Exception as e:
         print(f"Error1: {e}")
 
-def fetch_most_valuable_cars():
+def list_most_valuable_cars():
     try:
         cars = server.fetch_most_valuable_cars()
         if cars:
             print("\nMost Valuable Cars:")
             for car in cars:
-                print(f"- Brand: {car['brand_ref']}, MSRP: {car['msrp']}")
+                print(f"- Car ID: {car['id']}, Brand: {car['brand_name']}, Model: {car['model_name']}, MSRP: {car['msrp']}")
         else:
             print("No valuable cars found.")
     except Exception as e:
         print(f"Error: {e}")
+
 
 def main():
     while True:
@@ -137,7 +138,7 @@ def main():
             print("1 - Select all brands")
             print("2 - Select all models ")
             print("3 - Select market categories ")
-            print("4 - Fetch most valuable cars")
+            print("4 - Most valuable cars")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -150,7 +151,7 @@ def main():
                 list_market_categories()
                 continue
             if option == '4':
-                fetch_most_valuable_cars()
+                list_most_valuable_cars()
                 continue
 
         elif option == '0':

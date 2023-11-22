@@ -39,4 +39,4 @@ def remove_documents(file_name):
 
     except Exception as e:
         print(f"Error removing document: {e}")
-        return f"Error: {e}"
+        return f"Error3: {e}"
