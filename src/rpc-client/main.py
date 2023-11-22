@@ -101,7 +101,7 @@ def list_most_valuable_cars():
         if cars:
             print("\nMost Valuable Cars:")
             for car in cars:
-                print(f"- Car ID: {car['id']}, Brand: {car['brand_name']}, Model: {car['model_name']}, MSRP: {car['msrp']}")
+                print(f"- Car ID: {car['id']}, Year: {car['year']}, Brand: {car['brand_name']}, Model: {car['model_name']}, MSRP: {car['msrp']}")
         else:
             print("No valuable cars found.")
     except Exception as e:
