@@ -87,13 +87,14 @@ def list_market_categories():
     try:
         categories = server.fetch_market_categories()
         if categories:
-            print("\nList of Market Categories ni:")
+            print("\nList of Market Categories:")
             for category in categories:
                 print(f"- {category}")
         else:
             print("No market categories found.")
     except Exception as e:
-        print(f"Error1: {e}")
+        print(f"Error: {e}")
+
 
 def list_most_valuable_cars():
     try:
@@ -131,6 +132,18 @@ def list_vehicles_by_category():
         else:
             print(f"No vehicles found in the category {category}.")
 
+    except Exception as e:
+        print(f"Error: {e}")
+
+def display_category_statistics(brand_name):
+    try:
+        statistics = server.fetch_category_statistics(brand_name)
+        if statistics:
+            print(f"\nStatistics for Brand {brand_name}:")
+            for stat in statistics:
+                print(f"- Category: {stat['category']}, Vehicle Count: {stat['vehicle_count']}")
+        else:
+            print(f"No statistics found for the brand {brand_name}.")
     except Exception as e:
         print(f"Error: {e}")
 
@@ -172,6 +185,7 @@ def main():
             print("4 - Most valuable cars")
             print("5 - List Models By Brand")
             print("6 - List Cars By Categories")
+            print("7 - estatisticas")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -191,7 +205,12 @@ def main():
                 list_models_of_brand(brand_name_input)  
                 continue
             if option == '6':
+                list_market_categories()
                 list_vehicles_by_category() 
+                continue
+            if option == '7':
+                brand_name_input = input("Enter the brand name: ")
+                display_category_statistics(brand_name_input)
                 continue
 
         elif option == '0':

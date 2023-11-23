@@ -30,16 +30,15 @@ def fetch_models():
 
 def fetch_market_categories():
     database = Database()
-    result_models = []
-
-    results = database.selectAll("SELECT unnest(xpath('//Categories/market_category/@name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
+    results_categories = []
+    results = database.selectAll("SELECT unnest(xpath('//Categories/market_category/@Name', xml)) as result FROM imported_documents WHERE deleted_on IS NULL")
     database.disconnect()
 
-    for model in results:
-        if not model in result_models:
-            result_models.append(model)
+    for category in results:
+        if not category in results_categories:
+            results_categories.append(category)
 
-    return result_models
+    return results_categories
 
 def fetch_most_valuable_cars():
     database = Database()
@@ -158,3 +157,35 @@ def fetch_vehicles_by_category(category):
     ]
 
     return query_result
+
+def fetch_category_statistics(brand_name):
+    database = Database()
+
+    query = f"""
+    SELECT
+        category.category_name,
+        COUNT(vehicle.id) AS vehicle_count
+    FROM
+        unnest(xpath(
+            '//Car[./Market_Categories/market_category/@ref = (SELECT unnest(xpath(\'//Brand[@name="{brand_name}"]/Models/Model/@name\', xml)) FROM imported_documents WHERE deleted_on IS NULL)]',
+            xml
+        )) AS category(category_name),
+        vehicles AS vehicle
+    WHERE
+        category.category_name IS NOT NULL
+    GROUP BY
+        category.category_name;
+    """
+
+    results = database.selectAll(query)
+    database.disconnect()
+
+    category_statistics = [
+        {
+            "category": result.get("category_name", "N/A"),
+            "vehicle_count": result.get("vehicle_count", 0)
+        }
+        for result in results
+    ]
+
+    return category_statistics

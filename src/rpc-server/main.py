@@ -48,6 +48,7 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(queries.fetch_most_valuable_cars)
     server.register_function(queries.fetch_models_by_brand)
     server.register_function(queries.fetch_vehicles_by_category)
+    server.register_function(queries.fetch_category_statistics)
 
 
 
