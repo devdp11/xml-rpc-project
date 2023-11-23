@@ -189,3 +189,66 @@ def fetch_category_statistics(brand_name):
     ]
 
     return category_statistics
+
+def fetch_model_percentage():
+    database = Database()
+
+    query = """
+WITH vehicle_data AS (
+    SELECT
+        unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
+        unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
+        unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref
+    FROM imported_documents
+    WHERE deleted_on IS NULL
+),
+model_counts AS (
+    SELECT
+        brand.brand_name,
+        md.model_name,
+        count(*) as model_count
+    FROM vehicle_data vd
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
+            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) brand ON vd.brand_ref = brand.brand_id
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
+            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) md ON vd.model_ref = md.model_id
+    GROUP BY brand.brand_name, md.model_name
+),
+total_count AS (
+    SELECT count(DISTINCT id) as total FROM vehicle_data
+)
+
+SELECT
+    mc.brand_name,
+    mc.model_name,
+    mc.model_count as count,
+    ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 4) as percentage
+FROM model_counts mc
+CROSS JOIN total_count tc
+ORDER BY mc.model_name, mc.brand_name;
+    """
+
+    results = database.selectAllArray(query)
+    database.disconnect()
+
+    query_result = [
+        {
+            "brand_name": car.get("brand_name", "N/A"),
+            "model_name": car.get("model_name", "N/A"),
+            "count": int(car.get("count", 0)),
+            "percentage": float(car.get("percentage", 0.0)),
+        }
+        for car in results
+    ]
+
+    return query_result
