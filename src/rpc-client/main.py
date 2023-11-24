@@ -7,9 +7,20 @@ print("\nconnecting to server")
 server = xmlrpc.client.ServerProxy('http://is-rpc-server:9000')
 print("\nconnected to server")
 
+def print_results(results, page, res_page):
+    sindex = (page - 1) * res_page
+    eindex = sindex + res_page
+    p_results = results[sindex:eindex]
+
+    print(f"\n Showing {len(p_results)} results from page {page}:")
+    print("--------------------------------------------------------------------------")
+    for data in p_results:
+        print(data)
+    print("--------------------------------------------------------------------------")
+
 def select_database_file():
     while True:
-        print("\n-----> Select Database File <------")
+        print("\n---> Select Database File <----")
         files = server.list_documents()
 
         if not files:
@@ -86,28 +97,62 @@ def removeDocument():
         print(f"Error: {e}")
 
 def list_brands():
-    try:
-        brands = server.fetch_brands()
-        if brands:
-            print("\nList of Brands:")
-            for brand in brands:
-                print(f"- {brand}")
-        else:
-            print("\nNo brands found.")
-    except Exception as e:
-        print(f"Error: {e}")
+    page = 1
+    results_per_page = 30
+
+    while True:
+        try:
+            brands = server.fetch_brands()
+            if not brands:
+                print("\nNo brands found.")
+                break
+
+            print_results(brands, page, results_per_page)
+            
+            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
+            
+            if cli_response == "n" and (page * results_per_page) < len(brands):
+                page += 1
+            elif cli_response == "p" and page > 1:
+                page -= 1
+            elif cli_response == "/return":
+                break
+            else:
+                print("\nInvalid action. Try again.")
+
+        except Exception as e:
+            print(f"Error: {e}")
+            break
+
 
 def list_models():
-    try:
-        models = server.fetch_models()
-        if models:
-            print("\nList of Models:")
-            for model in models:
-                print(f"- {model}")
-        else:
-            print("\nNo models found.")
-    except Exception as e:
-        print(f"Error: {e}")
+    page = 1
+    results_per_page = 30
+
+    while True:
+        try:
+            models = server.fetch_models()
+            if not models:
+                print("\nNo models found.")
+                break
+
+            print_results(models, page, results_per_page)
+            
+            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
+            
+            if cli_response == "n" and (page * results_per_page) < len(models):
+                page += 1
+            elif cli_response == "p" and page > 1:
+                page -= 1
+            elif cli_response == "/return":
+                break
+            else:
+                print("\nInvalid action. Try again.")
+
+        except Exception as e:
+            print(f"Error: {e}")
+            break
+
 
 def list_market_categories():
     try:
@@ -147,16 +192,30 @@ def list_models_of_brand(brand_name):
         print(f"Error: {e}")
         
 def list_vehicles_by_category():
+    page = 1
+    results_per_page = 30
+
     try:
         category = input("\nEnter the market category: ")
-        vehicles = server.fetch_vehicles_by_category(category)
 
-        if vehicles:
-            print(f"\nVehicles in the category {category}:")
-            for vehicle in vehicles:
-                print(f"- Car ID: {vehicle['id']}, Year: {vehicle['year']}, Brand: {vehicle['brand_name']}, Model: {vehicle['model_name']}, MSRP: {vehicle['msrp']}")
-        else:
-            print(f"\nNo vehicles found in the category {category}.")
+        while True:
+            vehicles = server.fetch_vehicles_by_category(category)
+            if not vehicles:
+                print(f"\nNo vehicles found in the category {category}.")
+                break
+
+            print_results(vehicles, page, results_per_page)
+
+            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
+
+            if cli_response == "n" and (page * results_per_page) < len(vehicles):
+                page += 1
+            elif cli_response == "p" and page > 1:
+                page -= 1
+            elif cli_response == "/return":
+                break
+            else:
+                print("\nInvalid action. Try again.")
 
     except Exception as e:
         print(f"Error: {e}")
@@ -173,18 +232,33 @@ def display_category_statistics(brand_name):
     except Exception as e:
         print(f"Error: {e}")
 
-def display_model_statistics():
+def display_model_statistics(server):
+    page = 1
+    results_per_page = 30
+
     try:
-        model_percentage = server.fetch_model_percentage()
-        if model_percentage:
-            print("\nModel Percentage:")
-            for item in model_percentage:
-                percentage_str = str(item['percentage'])
-                print(f"- Brand: {item['brand_name']}, Model: {item['model_name']}, Count: {item['count']}, Percentage: {percentage_str}%")
-        else:
-            print("\nNo model percentage data found.")
+        while True:
+            model_percentage = server.fetch_model_percentage()
+            if not model_percentage:
+                print("\nNo model percentage data found.")
+                break
+
+            print_results(model_percentage, page, results_per_page)
+
+            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
+
+            if cli_response == "n" and (page * results_per_page) < len(model_percentage):
+                page += 1
+            elif cli_response == "p" and page > 1:
+                page -= 1
+            elif cli_response == "/return":
+                break
+            else:
+                print("\nInvalid action. Try again.")
+
     except Exception as e:
         print(f"Error: {e}")
+
 
 def main():
     while True:
