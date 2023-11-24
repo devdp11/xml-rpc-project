@@ -29,9 +29,9 @@ def select_database_file():
                 print(f"\nSelected file: {selected_file}")
                 return selected_file
             else:
-                print("\nInvalid file number. Try again.")
+                print("\nInvalid file number.")
         except ValueError:
-            print("\nInvalid input. Please enter a number.")
+            print("\nInvalid input.")
 
 def importDocument():
     try:
@@ -151,32 +151,81 @@ def list_models_brand():
         print(f"Error: {e}")
 
 def list_cars_from_year():
+    page = 1
+    results_per_page = 40
+
     try:
         year = input("Enter the year: ")
+        results = server.fetch_vehicles_by_year(year)
+        len_results = len(results)
 
-        cars = server.fetch_vehicles_by_year(year)
-        if cars:
-            print(f"\nList of cars from year {year}:")
-            for car in cars:
-                print(f"\nCar ID: {car['id']} \nYear: {car['year']} \nBrand: {car['brand_name']} \nModel: {car['model_name']} \nMSRP: {car['msrp']}")
-        else:
+        if not results:
             print(f"\nNo cars found from year {year}.")
+            return
+
+        while True:
+            start = (page - 1) * results_per_page
+            end = start + results_per_page
+            current_page_results = results[start:end]
+
+            print(f"\nList of cars from year {year}:")
+            for car in current_page_results:
+                print(f"\nCar ID: {car['id']} \nYear: {car['year']} \nBrand: {car['brand_name']} \nModel: {car['model_name']} \nMSRP: {car['msrp']}")
+
+            print(f"\nShowing results {start + 1} to {min(end, len_results)} out of {len_results}.")
+
+            if len_results > end:
+                cli_response = input("\nType 'n' to go to the next page or '/return' to leave: ").lower()
+                if cli_response == "n":
+                    page += 1
+                elif cli_response == "/return":
+                    break
+                else:
+                    print("\nInvalid action. Try again.")
+            else:
+                print("\nEnd of results.")
+                break
+
     except Exception as e:
         print(f"Error: {e}")
+
         
 def list_vehicles_category():
+    page = 1
+    results_per_page = 40
+
     try:
         list_market_categories()
 
         category_name = input("\nEnter the market category: ")
-        vehicles = server.fetch_vehicles_by_category(category_name)
+        results = server.fetch_vehicles_by_category(category_name)
+        len_results = len(results)
 
-        if vehicles:
-            print(f"\nVehicles in the category {category_name}:")
-            for vehicle in vehicles:
-                print(f"\nCar ID: {vehicle['id']} \nYear: {vehicle['year']} \nBrand: {vehicle['brand_name']} \nModel: {vehicle['model_name']} \nMSRP: {vehicle['msrp']}")
-        else:
+        if not results:
             print(f"\nNo vehicles found in the category {category_name}.")
+            return
+
+        while True:
+            start = (page - 1) * results_per_page
+            end = start + results_per_page
+            current_page_results = results[start:end]
+
+            print(f"\nVehicles in the category {category_name}:")
+            for vehicle in current_page_results:
+                print(f"\nCar ID: {vehicle['id']} \nYear: {vehicle['year']} \nBrand: {vehicle['brand_name']} \nModel: {vehicle['model_name']} \nMSRP: {vehicle['msrp']}")
+
+            print(f"\nShowing results {start + 1} to {min(end, len_results)} out of {len_results}.")
+
+            if len_results > end:
+                response = input("\nType 'n' to go to the next page or '/return' to leave: ").lower()
+                if response == "n":
+                    page += 1
+                elif response == "/return":
+                    break
+                else:
+                    print("\nInvalid action. Try again.")
+            else:
+                break
 
     except Exception as e:
         print(f"Error: {e}")
@@ -198,15 +247,41 @@ def display_category_statistics():
         print(f"Error: {e}")
 
 def list_brand_model_percentage():
+    page = 1
+    results_per_page = 40
+
     try:
-        model_percentage = server.fetch_model_percentage()
-        if model_percentage:
+        results = server.fetch_model_percentage()
+        len_results = len(results)
+
+        if not results:
+            print("\nNo model percentage data found.")
+            return
+
+        while True:
+            start = (page - 1) * results_per_page
+            end = start + results_per_page
+            current_page_results = results[start:end]
+
             print("\nModel Percentage:")
-            for item in model_percentage:
+            for item in current_page_results:
                 percentage_str = str(item['percentage'])
                 print(f"\nBrand: {item['brand_name']}, \nModel: {item['model_name']}, \nAmount: {item['count']}, \nPercentage: {percentage_str}%")
-        else:
-            print("\nNo model percentage data found.")
+
+            print(f"\nShowing results {start + 1} to {min(end, len_results)} out of {len_results}.")
+
+            if len_results > end:
+                response = input("\nType 'n' to go to the next page or '/return' to leave: ").lower()
+                if response == "n":
+                    page += 1
+                elif response == "/return":
+                    break
+                else:
+                    print("\nInvalid action. Try again.")
+            else:
+                print("\nEnd of results.")
+                break
+
     except Exception as e:
         print(f"Error: {e}")
         
@@ -299,9 +374,7 @@ def main():
             if option == '10':
                 list_model_percentage_brand()
                 continue
-            if option == '10':
-                list_cars_from_year()  
-                continue
+
 
 
         elif option == '0':
@@ -310,6 +383,5 @@ def main():
         else:
             print("\nInvalid Option, Try Again.")
 
-if __name__ == "__main__":
-    selected_file = select_database_file()
-    main()
+selected_file = select_database_file()
+main()

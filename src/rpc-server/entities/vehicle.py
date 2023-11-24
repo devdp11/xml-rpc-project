@@ -60,8 +60,7 @@ class Vehicle:
                 category_item_element.set("ref", str(unique_categories[category_name]))
             else:
                 market_category_item = MarketCategoryItem(category_item)
-                market_category_item_a = str(market_category_item.get_id()) + " - " + str(market_category_item.get_name())  
-                category_item_element.set("ref", market_category_item_a)
+                category_item_element.set("ref", str(market_category_item.get_id()))
 
         size_element =  ET.SubElement(vehicle_element, "Vehicle_Size")
         size_element.set("ref", str(self._vehicle_size.get_id()))
