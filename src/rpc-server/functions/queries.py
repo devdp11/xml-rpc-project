@@ -1,6 +1,7 @@
 from lxml import etree
 from database.database import Database
 
+""" SELECTS ALL / ORDER"""
 def fetch_brands():
     database = Database()
     result_brands = []
@@ -26,7 +27,6 @@ def fetch_models():
             result_models.append(model)
 
     return result_models
-
 
 def fetch_market_categories():
     database = Database()
@@ -82,6 +82,7 @@ def fetch_most_valuable_cars():
 
     return query_result
 
+""" SELECTS TEXT"""
 def fetch_models_by_brand(brand_name):
     database = Database()
     result_models = []
@@ -102,7 +103,7 @@ def fetch_models_by_brand(brand_name):
 
     return result_models
 
-def fetch_vehicles_by_category(category):
+def fetch_vehicles_by_category(category_name):
     database = Database()
 
     query = f"""
@@ -158,38 +159,65 @@ def fetch_vehicles_by_category(category):
 
     return query_result
 
-def fetch_category_statistics(brand_name):
+def fetch_vehicles_by_year(year):
     database = Database()
 
     query = f"""
+    WITH vehicle_data AS (
+        SELECT
+            unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
+            unnest(xpath('//Vehicles/Car/@year', xml))::text as year,
+            unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
+            unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref,
+            unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ),
+    model_data AS (
+        SELECT
+            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
+            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    )
+
     SELECT
-        category.category_name,
-        COUNT(vehicle.id) AS vehicle_count
-    FROM
-        unnest(xpath(
-            '//Car[./Market_Categories/market_category/@ref = (SELECT unnest(xpath(\'//Brand[@name="{brand_name}"]/Models/Model/@name\', xml)) FROM imported_documents WHERE deleted_on IS NULL)]',
-            xml
-        )) AS category(category_name),
-        vehicles AS vehicle
-    WHERE
-        category.category_name IS NOT NULL
-    GROUP BY
-        category.category_name;
+        car.id,
+        car.year as year,
+        COALESCE(brand.name, 'N/A') as brand_name,
+        COALESCE(model.model_name, 'N/A') as model_name,
+        car.msrp
+    FROM vehicle_data car
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
+            unnest(xpath('//Brands/Brand/@name', xml))::text as name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) brand ON car.brand_ref = brand.brand_id
+    LEFT JOIN model_data model ON car.model_ref = model.model_id
+    WHERE car.year is NOT NULL AND car.year = '{year}'
+    ORDER BY car.year DESC;
     """
 
-    results = database.selectAll(query)
+
+    results = database.selectAllArray(query)
     database.disconnect()
 
-    category_statistics = [
+    query_result = [
         {
-            "category": result.get("category_name", "N/A"),
-            "vehicle_count": result.get("vehicle_count", 0)
+            "id": car.get("id", "N/A"),
+            "year": car.get("year", "N/A"),
+            "brand_name": car.get("brand_name", "N/A"),
+            "model_name": car.get("model_name", "N/A"),
+            "msrp": car.get("msrp", "N/A"),
         }
-        for result in results
+        for car in results
     ]
 
-    return category_statistics
+    return query_result
 
+""" ESTATISTICAS """
 def fetch_model_percentage():
     database = Database()
 
@@ -252,7 +280,6 @@ ORDER BY mc.model_name, mc.brand_name;
     ]
 
     return query_result
-
 
 def fetch_model_percentage_by_brand(brand_name):
     database = Database()
@@ -337,3 +364,36 @@ ORDER BY mc.model_name, mc.brand_name;
     ]
 
     return query_result
+
+""" NOT WORKING """
+def fetch_category_statistics(brand_name):
+    database = Database()
+
+    query = f"""
+    SELECT
+        category.category_name,
+        COUNT(vehicle.id) AS vehicle_count
+    FROM
+        unnest(xpath(
+            '//Car[./Market_Categories/market_category/@ref = (SELECT unnest(xpath(\'//Brand[@name="{brand_name}"]/Models/Model/@name\', xml)) FROM imported_documents WHERE deleted_on IS NULL)]',
+            xml
+        )) AS category(category_name),
+        vehicles AS vehicle
+    WHERE
+        category.category_name IS NOT NULL
+    GROUP BY
+        category.category_name;
+    """
+
+    results = database.selectAll(query)
+    database.disconnect()
+
+    category_statistics = [
+        {
+            "category": result.get("category_name", "N/A"),
+            "vehicle_count": result.get("vehicle_count", 0)
+        }
+        for result in results
+    ]
+
+    return category_statistics

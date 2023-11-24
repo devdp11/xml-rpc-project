@@ -41,12 +41,18 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(document.list_documents)
     server.register_function(document.remove_documents)
 
+    """ selects easy """
     server.register_function(queries.fetch_brands)
     server.register_function(queries.fetch_models)
     server.register_function(queries.fetch_market_categories)
+
+    """ selects hard """
     server.register_function(queries.fetch_most_valuable_cars)
     server.register_function(queries.fetch_models_by_brand)
     server.register_function(queries.fetch_vehicles_by_category)
+    server.register_function(queries.fetch_vehicles_by_year)
+
+    """ selects estatisticas / count """
     server.register_function(queries.fetch_category_statistics)
     server.register_function(queries.fetch_model_percentage)
     server.register_function(queries.fetch_model_percentage_by_brand)

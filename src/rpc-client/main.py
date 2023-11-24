@@ -7,17 +7,6 @@ print("\nconnecting to server")
 server = xmlrpc.client.ServerProxy('http://is-rpc-server:9000')
 print("\nconnected to server")
 
-def print_results(results, page, res_page):
-    sindex = (page - 1) * res_page
-    eindex = sindex + res_page
-    p_results = results[sindex:eindex]
-
-    print(f"\n Showing {len(p_results)} results from page {page}:")
-    print("--------------------------------------------------------------------------")
-    for data in p_results:
-        print(data)
-    print("--------------------------------------------------------------------------")
-
 def select_database_file():
     while True:
         print("\n---> Select Database File <----")
@@ -96,63 +85,30 @@ def removeDocument():
     except Exception as e:
         print(f"Error: {e}")
 
+""" NORMAL SELECT """
 def list_brands():
-    page = 1
-    results_per_page = 30
-
-    while True:
-        try:
-            brands = server.fetch_brands()
-            if not brands:
-                print("\nNo brands found.")
-                break
-
-            print_results(brands, page, results_per_page)
-            
-            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
-            
-            if cli_response == "n" and (page * results_per_page) < len(brands):
-                page += 1
-            elif cli_response == "p" and page > 1:
-                page -= 1
-            elif cli_response == "/return":
-                break
-            else:
-                print("\nInvalid action. Try again.")
-
-        except Exception as e:
-            print(f"Error: {e}")
-            break
-
+    try:
+        brands = server.fetch_brands()
+        if brands:
+            print("\nList of Brands:")
+            for brand in brands:
+                print(f"- {brand}")
+        else:
+            print("\nNo brands found.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def list_models():
-    page = 1
-    results_per_page = 30
-
-    while True:
-        try:
-            models = server.fetch_models()
-            if not models:
-                print("\nNo models found.")
-                break
-
-            print_results(models, page, results_per_page)
-            
-            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
-            
-            if cli_response == "n" and (page * results_per_page) < len(models):
-                page += 1
-            elif cli_response == "p" and page > 1:
-                page -= 1
-            elif cli_response == "/return":
-                break
-            else:
-                print("\nInvalid action. Try again.")
-
-        except Exception as e:
-            print(f"Error: {e}")
-            break
-
+    try:
+        models = server.fetch_models()
+        if models:
+            print("\nList of Models:")
+            for model in models:
+                print(f"- {model}")
+        else:
+            print("\nNo models found.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def list_market_categories():
     try:
@@ -166,104 +122,98 @@ def list_market_categories():
     except Exception as e:
         print(f"Error: {e}")
 
-
 def list_most_valuable_cars():
     try:
         cars = server.fetch_most_valuable_cars()
         if cars:
             print("\nMost Valuable Cars:")
             for car in cars:
-                print(f"- Car ID: {car['id']}, Year: {car['year']}, Brand: {car['brand_name']}, Model: {car['model_name']}, MSRP: {car['msrp']}")
+                print(f"\nCar ID: {car['id']} \nYear: {car['year']} \nBrand: {car['brand_name']} \nModel: {car['model_name']} \nMSRP: {car['msrp']}")
         else:
             print("\nNo valuable cars found.")
     except Exception as e:
         print(f"Error: {e}")
-        
-def list_models_of_brand(brand_name):
+
+""" SELECT BY TEXT """    
+def list_models_brand():
     try:
+
+        brand_name = input("Enter the brand name: ")
+
         models = server.fetch_models_by_brand(brand_name)
         if models:
             print(f"\nList of Models for Brand {brand_name}:")
             for model in models:
-                print(f"- {model}")
+                print(f"{model}")
         else:
             print(f"\nNo models found for the brand {brand_name}.")
     except Exception as e:
         print(f"Error: {e}")
-        
-def list_vehicles_by_category():
-    page = 1
-    results_per_page = 30
 
+def list_cars_from_year():
     try:
-        category = input("\nEnter the market category: ")
+        year = input("Enter the year: ")
 
-        while True:
-            vehicles = server.fetch_vehicles_by_category(category)
-            if not vehicles:
-                print(f"\nNo vehicles found in the category {category}.")
-                break
+        cars = server.fetch_vehicles_by_year(year)
+        if cars:
+            print(f"\nList of cars from year {year}:")
+            for car in cars:
+                print(f"\nCar ID: {car['id']} \nYear: {car['year']} \nBrand: {car['brand_name']} \nModel: {car['model_name']} \nMSRP: {car['msrp']}")
+        else:
+            print(f"\nNo cars found from year {year}.")
+    except Exception as e:
+        print(f"Error: {e}")
+        
+def list_vehicles_category():
+    try:
+        list_market_categories()
 
-            print_results(vehicles, page, results_per_page)
+        category_name = input("\nEnter the market category: ")
+        vehicles = server.fetch_vehicles_by_category(category_name)
 
-            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
-
-            if cli_response == "n" and (page * results_per_page) < len(vehicles):
-                page += 1
-            elif cli_response == "p" and page > 1:
-                page -= 1
-            elif cli_response == "/return":
-                break
-            else:
-                print("\nInvalid action. Try again.")
+        if vehicles:
+            print(f"\nVehicles in the category {category_name}:")
+            for vehicle in vehicles:
+                print(f"\nCar ID: {vehicle['id']} \nYear: {vehicle['year']} \nBrand: {vehicle['brand_name']} \nModel: {vehicle['model_name']} \nMSRP: {vehicle['msrp']}")
+        else:
+            print(f"\nNo vehicles found in the category {category_name}.")
 
     except Exception as e:
         print(f"Error: {e}")
 
-def display_category_statistics(brand_name):
+""" SELECT STATS/PERCENTAGE """
+def display_category_statistics():
     try:
+
+        brand_name = input("Enter the brand name: ")
+
         statistics = server.fetch_category_statistics(brand_name)
         if statistics:
             print(f"\nStatistics for Brand {brand_name}:")
             for stat in statistics:
-                print(f"- Category: {stat['category']}, Vehicle Count: {stat['vehicle_count']}")
+                print(f"\nCategory: {stat['category']}, Vehicle Count: {stat['vehicle_count']}")
         else:
             print(f"\nNo statistics found for the brand {brand_name}.")
     except Exception as e:
         print(f"Error: {e}")
 
-def display_model_statistics(server):
-    page = 1
-    results_per_page = 30
-
+def list_brand_model_percentage():
     try:
-        while True:
-            model_percentage = server.fetch_model_percentage()
-            if not model_percentage:
-                print("\nNo model percentage data found.")
-                break
-
-            print_results(model_percentage, page, results_per_page)
-
-            cli_response = input("\nType 'n' to go to the next page, 'p' for the previous page, or '/return' to leave: ").lower()
-
-            if cli_response == "n" and (page * results_per_page) < len(model_percentage):
-                page += 1
-            elif cli_response == "p" and page > 1:
-                page -= 1
-            elif cli_response == "/return":
-                break
-            else:
-                print("\nInvalid action. Try again.")
-
+        model_percentage = server.fetch_model_percentage()
+        if model_percentage:
+            print("\nModel Percentage:")
+            for item in model_percentage:
+                percentage_str = str(item['percentage'])
+                print(f"\nBrand: {item['brand_name']}, \nModel: {item['model_name']}, \nAmount: {item['count']}, \nPercentage: {percentage_str}%")
+        else:
+            print("\nNo model percentage data found.")
     except Exception as e:
         print(f"Error: {e}")
         
-def fetch_model_percentage_by_brand():
+def list_model_percentage_brand():
     try:
 
         brand_name_input = input("Enter the brand name: ")
-
 
         model_percentage = server.fetch_model_percentage_by_brand(brand_name_input)
 
@@ -271,12 +221,11 @@ def fetch_model_percentage_by_brand():
             print(f"\nModel Percentage for {brand_name_input}:")
             for item in model_percentage:
                 percentage_str = str(item['percentage'])
-                print(f"- Model: {item['model_name']}, Count: {item['count']}, Percentage: {percentage_str}%")
+                print(f"\nModel: {item['model_name']}, \nAmount: {item['count']}, \nPercentage: {percentage_str}%")
         else:
             print(f"No model percentage data found for {brand_name_input}.")
     except Exception as e:
         print(f"Error: {e}")
-
 
 def main():
     while True:
@@ -304,16 +253,19 @@ def main():
                 continue
 
         elif option == '2':
-            print("\n-----> Menu <------")
+            print("\n----------> Menu <----------")
             print("1 - Select all brands")
             print("2 - Select all models ")
             print("3 - Select market categories ")
             print("4 - Most valuable cars")
+            print("\n----------> TEXT <----------")
             print("5 - List Models By Brand")
             print("6 - List Cars By Categories")
-            print("7 - estatisticas(nao funcional)")
-            print("8 - Model Percentage")
-            print("9 - Model Percentage of a Brand")
+            print("7 - List Cars By Year")
+            print("\n----------> STATS <----------")
+            print("8 - NOT WORKING")
+            print("9 - Brand Model Percentage")
+            print("10 - Model Percentage of a Brand")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -329,22 +281,26 @@ def main():
                 list_most_valuable_cars()
                 continue
             if option == '5':
-                brand_name_input = input("Enter the brand name: ")
-                list_models_of_brand(brand_name_input)  
+                list_models_brand()  
                 continue
             if option == '6':
-                list_market_categories()
-                list_vehicles_by_category() 
+                list_vehicles_category() 
                 continue
             if option == '7':
-                brand_name_input = input("Enter the brand name: ")
-                display_category_statistics(brand_name_input)
+                list_cars_from_year()  
                 continue
             if option == '8':
-                display_model_statistics()
+                print("\nNot Working")
+                """ display_category_statistics() """
                 continue
             if option == '9':
-                fetch_model_percentage_by_brand()
+                list_brand_model_percentage()
+                continue
+            if option == '10':
+                list_model_percentage_brand()
+                continue
+            if option == '10':
+                list_cars_from_year()  
                 continue
 
 
