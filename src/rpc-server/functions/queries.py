@@ -103,44 +103,55 @@ def fetch_models_by_brand(brand_name):
 
     return result_models
 
+def fetch_brands_by_country(country_name):
+    database = Database()
+
+    query = f"""
+    WITH brand_data AS (
+        SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name, unnest(xpath('//Brands/Brand/@country_ref', xml))::text as country_ref
+        FROM imported_documents WHERE deleted_on IS NULL
+    ),
+    country_data AS (
+        SELECT unnest(xpath('//Countries/Country/@id', xml))::text as country_id, unnest(xpath('//Countries/Country/@name', xml))::text as country_name
+        FROM imported_documents WHERE deleted_on IS NULL
+    )
+
+    SELECT brand.brand_id, brand.brand_name, country.country_name
+    FROM brand_data brand JOIN country_data country ON brand.country_ref = country.country_id WHERE country.country_name = '{country_name}';
+    """
+
+    results = database.selectAllArray(query)
+    database.disconnect()
+
+    query_result = [
+        {
+            "brand_id": brand.get("brand_id", "N/A"),
+            "brand_name": brand.get("brand_name", "N/A"),
+            "country_name": brand.get("country_name", "N/A"),
+        }
+        for brand in results
+    ]
+
+    return query_result
+
 def fetch_vehicles_by_category(category_name):
     database = Database()
 
     query = f"""
     WITH vehicle_data AS (
-        SELECT
-            unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
-            unnest(xpath('//Vehicles/Car/@year', xml))::text as year,
-            unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
-            unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref,
-            unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+        SELECT unnest(xpath('//Vehicles/Car/@id', xml))::text as id, unnest(xpath('//Vehicles/Car/@year', xml))::text as year, unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref, unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref, unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
+        FROM imported_documents WHERE deleted_on IS NULL
     ),
     model_data AS (
-        SELECT
-            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
-            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+        SELECT unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id, unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents WHERE deleted_on IS NULL
     )
 
-    SELECT
-        car.id,
-        car.year,
-        COALESCE(brand.name, 'N/A') as brand_name,
-        COALESCE(model.model_name, 'N/A') as model_name,
-        car.msrp
+    SELECT car.id, car.year, COALESCE(brand.name, 'N/A') as brand_name, COALESCE(model.model_name, 'N/A') as model_name, car.msrp
     FROM vehicle_data car
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
-            unnest(xpath('//Brands/Brand/@name', xml))::text as name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
-    ) brand ON car.brand_ref = brand.brand_id
-    LEFT JOIN model_data model ON car.model_ref = model.model_id
-    WHERE car.msrp IS NOT NULL;
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as name
+        FROM imported_documents WHERE deleted_on IS NULL
+    ) brand ON car.brand_ref = brand.brand_id LEFT JOIN model_data model ON car.model_ref = model.model_id WHERE car.msrp IS NOT NULL;
     """
 
     results = database.selectAllArray(query)
@@ -164,42 +175,22 @@ def fetch_vehicles_by_year(year):
 
     query = f"""
     WITH vehicle_data AS (
-        SELECT
-            unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
-            unnest(xpath('//Vehicles/Car/@year', xml))::text as year,
-            unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
-            unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref,
-            unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+        SELECT unnest(xpath('//Vehicles/Car/@id', xml))::text as id, unnest(xpath('//Vehicles/Car/@year', xml))::text as year, unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref, unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref, unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
+        FROM imported_documents WHERE deleted_on IS NULL
     ),
     model_data AS (
-        SELECT
-            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
-            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+        SELECT unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id, unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents WHERE deleted_on IS NULL
     )
 
-    SELECT
-        car.id,
-        car.year as year,
-        COALESCE(brand.name, 'N/A') as brand_name,
-        COALESCE(model.model_name, 'N/A') as model_name,
-        car.msrp
+    SELECT car.id, car.year as year, COALESCE(brand.name, 'N/A') as brand_name, COALESCE(model.model_name, 'N/A') as model_name, car.msrp
     FROM vehicle_data car
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
-            unnest(xpath('//Brands/Brand/@name', xml))::text as name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as name FROM imported_documents WHERE deleted_on IS NULL
     ) brand ON car.brand_ref = brand.brand_id
     LEFT JOIN model_data model ON car.model_ref = model.model_id
     WHERE car.year is NOT NULL AND car.year = '{year}'
     ORDER BY car.year DESC;
     """
-
 
     results = database.selectAllArray(query)
     database.disconnect()
@@ -223,46 +214,23 @@ def fetch_model_percentage():
 
     query = """
 WITH vehicle_data AS (
-    SELECT
-        unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
-        unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
-        unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref
-    FROM imported_documents
-    WHERE deleted_on IS NULL
+    SELECT unnest(xpath('//Vehicles/Car/@id', xml))::text as id, unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref, unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref
+    FROM imported_documents WHERE deleted_on IS NULL
 ),
-model_counts AS (
-    SELECT
-        brand.brand_name,
-        md.model_name,
-        count(*) as model_count
+model_counts AS ( SELECT brand.brand_name, md.model_name, count(*) as model_count
     FROM vehicle_data vd
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
-            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+        FROM imported_documents WHERE deleted_on IS NULL
     ) brand ON vd.brand_ref = brand.brand_id
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
-            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id, unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents WHERE deleted_on IS NULL
     ) md ON vd.model_ref = md.model_id
     GROUP BY brand.brand_name, md.model_name
 ),
-total_count AS (
-    SELECT count(DISTINCT id) as total FROM vehicle_data
-)
+total_count AS ( SELECT count(DISTINCT id) as total FROM vehicle_data )
 
-SELECT
-    mc.brand_name,
-    mc.model_name,
-    mc.model_count as count,
-    ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 4) as percentage
-FROM model_counts mc
-CROSS JOIN total_count tc
+SELECT mc.brand_name, mc.model_name, mc.model_count as count, ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 4) as percentage
+FROM model_counts mc CROSS JOIN total_count tc 
 ORDER BY mc.model_name, mc.brand_name;
     """
 
@@ -287,66 +255,32 @@ def fetch_model_percentage_by_brand(brand_name):
     query = f"""
 WITH brand_id AS (
     SELECT unnest(xpath('//Brands/Brand[@name="{brand_name}"]/@id', xml))::text as brand_id
-    FROM imported_documents
-    WHERE deleted_on IS NULL
-    LIMIT 1
+    FROM imported_documents WHERE deleted_on IS NULL LIMIT 1
 ),
 vehicle_data AS (
-    SELECT
-        unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
-        unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
-        unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref
-    FROM imported_documents
-    WHERE deleted_on IS NULL
+    SELECT unnest(xpath('//Vehicles/Car/@id', xml))::text as id, unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref, unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref 
+    FROM imported_documents WHERE deleted_on IS NULL
 ),
-filtered_vehicle_data AS (
-    SELECT * FROM vehicle_data
-    WHERE brand_ref IN (SELECT brand_id FROM brand_id)
+filtered_vehicle_data AS ( SELECT * FROM vehicle_data WHERE brand_ref IN (SELECT brand_id FROM brand_id)
 ),
 model_counts AS (
-    SELECT
-        brand.brand_name,
-        md.model_name,
-        COUNT(*) as model_count
+    SELECT brand.brand_name, md.model_name, COUNT(*) as model_count
     FROM filtered_vehicle_data fvd
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
-            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
-    ) brand ON fvd.brand_ref = brand.brand_id
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
-            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
-    ) md ON fvd.model_ref = md.model_id
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+    FROM imported_documents WHERE deleted_on IS NULL ) brand ON fvd.brand_ref = brand.brand_id
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id, unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+    FROM imported_documents WHERE deleted_on IS NULL ) md ON fvd.model_ref = md.model_id
     GROUP BY brand.brand_name, md.model_name
 ),
-total_count_per_brand AS (
-    SELECT
-        brand.brand_name,
-        COUNT(DISTINCT fvd.id) as total
+total_count_per_brand AS ( SELECT brand.brand_name, COUNT(DISTINCT fvd.id) as total
     FROM filtered_vehicle_data fvd
-    LEFT JOIN (
-        SELECT
-            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
-            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
-        FROM imported_documents
-        WHERE deleted_on IS NULL
-    ) brand ON fvd.brand_ref = brand.brand_id
+    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+    FROM imported_documents WHERE deleted_on IS NULL ) brand ON fvd.brand_ref = brand.brand_id
     GROUP BY brand.brand_name
 )
 
-SELECT
-    mc.brand_name,
-    mc.model_name,
-    mc.model_count as count,
-    ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 2) as percentage
-FROM model_counts mc
-JOIN total_count_per_brand tc ON mc.brand_name = tc.brand_name
+SELECT mc.brand_name, mc.model_name, mc.model_count as count, ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 2) as percentage
+FROM model_counts mc JOIN total_count_per_brand tc ON mc.brand_name = tc.brand_name 
 ORDER BY mc.model_name, mc.brand_name;
 """
 
@@ -364,36 +298,3 @@ ORDER BY mc.model_name, mc.brand_name;
     ]
 
     return query_result
-
-""" NOT WORKING """
-def fetch_category_statistics(brand_name):
-    database = Database()
-
-    query = f"""
-    SELECT
-        category.category_name,
-        COUNT(vehicle.id) AS vehicle_count
-    FROM
-        unnest(xpath(
-            '//Car[./Market_Categories/market_category/@ref = (SELECT unnest(xpath(\'//Brand[@name="{brand_name}"]/Models/Model/@name\', xml)) FROM imported_documents WHERE deleted_on IS NULL)]',
-            xml
-        )) AS category(category_name),
-        vehicles AS vehicle
-    WHERE
-        category.category_name IS NOT NULL
-    GROUP BY
-        category.category_name;
-    """
-
-    results = database.selectAll(query)
-    database.disconnect()
-
-    category_statistics = [
-        {
-            "category": result.get("category_name", "N/A"),
-            "vehicle_count": result.get("vehicle_count", 0)
-        }
-        for result in results
-    ]
-
-    return category_statistics

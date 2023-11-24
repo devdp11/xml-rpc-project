@@ -33,9 +33,12 @@ def remove_documents(file_name):
     try:
         database = Database()
 
-        database.softdelete(file_name)
+        rows_affected = database.softdelete(file_name)
 
-        return "Document removed successfully."
+        if rows_affected > 0:
+            return "Document removed successfully."
+        else:
+            return "Document not found or already removed."
 
     except Exception as e:
         print(f"Error removing document: {e}")

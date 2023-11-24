@@ -45,6 +45,7 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(queries.fetch_brands)
     server.register_function(queries.fetch_models)
     server.register_function(queries.fetch_market_categories)
+    server.register_function(queries.fetch_brands_by_country)
 
     """ selects hard """
     server.register_function(queries.fetch_most_valuable_cars)
@@ -53,7 +54,6 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(queries.fetch_vehicles_by_year)
 
     """ selects estatisticas / count """
-    server.register_function(queries.fetch_category_statistics)
     server.register_function(queries.fetch_model_percentage)
     server.register_function(queries.fetch_model_percentage_by_brand)
 
