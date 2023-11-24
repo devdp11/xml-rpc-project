@@ -258,6 +258,24 @@ def display_model_statistics(server):
 
     except Exception as e:
         print(f"Error: {e}")
+        
+def fetch_model_percentage_by_brand():
+    try:
+
+        brand_name_input = input("Enter the brand name: ")
+
+
+        model_percentage = server.fetch_model_percentage_by_brand(brand_name_input)
+
+        if model_percentage:
+            print(f"\nModel Percentage for {brand_name_input}:")
+            for item in model_percentage:
+                percentage_str = str(item['percentage'])
+                print(f"- Model: {item['model_name']}, Count: {item['count']}, Percentage: {percentage_str}%")
+        else:
+            print(f"No model percentage data found for {brand_name_input}.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def main():
@@ -293,8 +311,9 @@ def main():
             print("4 - Most valuable cars")
             print("5 - List Models By Brand")
             print("6 - List Cars By Categories")
-            print("7 - estatisticas")
+            print("7 - estatisticas(nao funcional)")
             print("8 - Model Percentage")
+            print("9 - Model Percentage of a Brand")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -323,6 +342,9 @@ def main():
                 continue
             if option == '8':
                 display_model_statistics()
+                continue
+            if option == '9':
+                fetch_model_percentage_by_brand()
                 continue
 
 

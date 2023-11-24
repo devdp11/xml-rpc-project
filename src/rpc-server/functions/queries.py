@@ -252,3 +252,88 @@ ORDER BY mc.model_name, mc.brand_name;
     ]
 
     return query_result
+
+
+def fetch_model_percentage_by_brand(brand_name):
+    database = Database()
+
+    query = f"""
+WITH brand_id AS (
+    SELECT unnest(xpath('//Brands/Brand[@name="{brand_name}"]/@id', xml))::text as brand_id
+    FROM imported_documents
+    WHERE deleted_on IS NULL
+    LIMIT 1
+),
+vehicle_data AS (
+    SELECT
+        unnest(xpath('//Vehicles/Car/@id', xml))::text as id,
+        unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref,
+        unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref
+    FROM imported_documents
+    WHERE deleted_on IS NULL
+),
+filtered_vehicle_data AS (
+    SELECT * FROM vehicle_data
+    WHERE brand_ref IN (SELECT brand_id FROM brand_id)
+),
+model_counts AS (
+    SELECT
+        brand.brand_name,
+        md.model_name,
+        COUNT(*) as model_count
+    FROM filtered_vehicle_data fvd
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
+            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) brand ON fvd.brand_ref = brand.brand_id
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id,
+            unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) md ON fvd.model_ref = md.model_id
+    GROUP BY brand.brand_name, md.model_name
+),
+total_count_per_brand AS (
+    SELECT
+        brand.brand_name,
+        COUNT(DISTINCT fvd.id) as total
+    FROM filtered_vehicle_data fvd
+    LEFT JOIN (
+        SELECT
+            unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id,
+            unnest(xpath('//Brands/Brand/@name', xml))::text as brand_name
+        FROM imported_documents
+        WHERE deleted_on IS NULL
+    ) brand ON fvd.brand_ref = brand.brand_id
+    GROUP BY brand.brand_name
+)
+
+SELECT
+    mc.brand_name,
+    mc.model_name,
+    mc.model_count as count,
+    ROUND(CAST(mc.model_count AS DECIMAL) / CAST(tc.total AS DECIMAL) * 100, 2) as percentage
+FROM model_counts mc
+JOIN total_count_per_brand tc ON mc.brand_name = tc.brand_name
+ORDER BY mc.model_name, mc.brand_name;
+"""
+
+    results = database.selectAllArray(query)
+    database.disconnect()
+
+    query_result = [
+        {
+            "brand_name": car.get("brand_name", "N/A"),
+            "model_name": car.get("model_name", "N/A"),
+            "count": int(car.get("count", 0)),
+            "percentage": float(car.get("percentage", 0.0)),
+        }
+        for car in results
+    ]
+
+    return query_result
