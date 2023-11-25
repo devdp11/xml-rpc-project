@@ -6,5 +6,3 @@ CREATE TABLE public.imported_documents (
 	updated_on      TIMESTAMP NOT NULL DEFAULT NOW(),
 	deleted_on		TIMESTAMP DEFAULT NULL
 );
-
-CREATE UNIQUE INDEX document_filename ON imported_documents (file_name) WHERE deleted_on IS NULL;
