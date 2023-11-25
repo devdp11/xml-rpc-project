@@ -306,6 +306,10 @@ def list_model_percentage_brand():
     except Exception as e:
         print(f"Error: {e}")
 
+def start():
+    input("\nPress '3nter' to continue...")
+    select_database_file()
+
 def main():
     while True:
         print("\n-----> Menu <------")
@@ -383,5 +387,5 @@ def main():
         else:
             print("\nInvalid Option, Try Again.")
 
-selected_file = select_database_file()
+start()
 main()
