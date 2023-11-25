@@ -40,7 +40,7 @@ class Vehicle:
         engine_cylinders_element =  ET.SubElement(vehicle_element, "Engine_Cylinders")
         engine_cylinders_element.set("value", self._engine_cylinders)
 
-        driven_wheels_element =  ET.SubElement(vehicle_element, "Driven_Wheels")
+        driven_wheels_element =  ET.SubElement(vehicle_element, "Traction")
         driven_wheels_element.set("ref", str(self._driven_wheels.get_id()))
 
         number_of_doors_element =  ET.SubElement(vehicle_element, "Number_Of_Doors")
@@ -66,7 +66,7 @@ class Vehicle:
         size_element.set("ref", str(self._vehicle_size.get_id()))
 
         style_element =  ET.SubElement(vehicle_element, "Vehicle_Style")
-        style_element.set("ref", str(self._driven_wheels.get_id()))
+        style_element.set("ref", str(self._vehicle_style.get_id()))
 
         highway_mpg_element =  ET.SubElement(vehicle_element, "Highway_mpg")
         highway_mpg_element.set("value", self._highway_mpg)

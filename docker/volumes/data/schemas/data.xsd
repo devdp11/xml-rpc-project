@@ -1,4 +1,5 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Data">
     <xs:complexType>
       <xs:sequence>
@@ -73,7 +74,15 @@
                   <xs:simpleContent>
                     <xs:extension base="xs:string">
                       <xs:attribute type="xs:int" name="id" use="optional"/>
-                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute name="name" use="optional">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:enumeration value="Compact"/>
+                            <xs:enumeration value="Midsize"/>
+                            <xs:enumeration value="Large"/>
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:attribute>
                     </xs:extension>
                   </xs:simpleContent>
                 </xs:complexType>
@@ -102,12 +111,17 @@
             <xs:sequence>
               <xs:element name="Traction" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
-                  <xs:simpleContent>
-                    <xs:extension base="xs:string">
-                      <xs:attribute type="xs:int" name="id" use="optional"/>
-                      <xs:attribute type="xs:string" name="name" use="optional"/>
-                    </xs:extension>
-                  </xs:simpleContent>
+                  <xs:attribute type="xs:int" name="id" use="optional"/>
+                  <xs:attribute name="name" use="optional">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="rear wheel drive"/>
+                        <xs:enumeration value="front wheel drive"/>
+                        <xs:enumeration value="all wheel drive"/>
+                        <xs:enumeration value="four wheel drive"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -121,7 +135,17 @@
                   <xs:simpleContent>
                     <xs:extension base="xs:string">
                       <xs:attribute type="xs:int" name="id" use="optional"/>
-                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute name="name" use="optional">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:enumeration value="MANUAL"/>
+                            <xs:enumeration value="AUTOMATIC"/>
+                            <xs:enumeration value="AUTOMATED_MANUAL"/>
+                            <xs:enumeration value="UNKNOWN"/>
+                            <xs:enumeration value="DIRECT_DRIVE"/>
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:attribute>
                     </xs:extension>
                   </xs:simpleContent>
                 </xs:complexType>
@@ -178,7 +202,7 @@
                         </xs:simpleContent>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element name="Driven_Wheels">
+                    <xs:element name="Traction">
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
@@ -268,13 +292,13 @@
                   </xs:sequence>
                   <xs:attribute type="xs:int" name="id" use="optional"/>
                   <xs:attribute name="year" use="optional">
-                  <xs:simpleType>
-                    <xs:restriction base="xs:short">
-                      <xs:minInclusive value="1900"/>
-                      <xs:maxInclusive value="2023"/>
-                    </xs:restriction>
-                  </xs:simpleType>
-                </xs:attribute>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:short">
+                        <xs:minInclusive value="1900"/>
+                        <xs:maxInclusive value="2023"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
                   <xs:attribute type="xs:int" name="brand_ref" use="optional"/>
                   <xs:attribute type="xs:int" name="model_ref" use="optional"/>
                 </xs:complexType>
