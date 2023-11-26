@@ -284,7 +284,7 @@
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:int" name="value" use="optional">
+                            <xs:attribute name="value" use="optional">
                               <xs:simpleType>
                                 <xs:restriction base="xs:int">
                                   <xs:minInclusive value="0"/>
