@@ -134,42 +134,6 @@ def fetch_brands_by_country(country_name):
 
     return query_result
 
-def fetch_vehicles_by_category(category_name):
-    database = Database()
-
-    query = f"""
-    WITH vehicle_data AS (
-        SELECT unnest(xpath('//Vehicles/Car/@id', xml))::text as id, unnest(xpath('//Vehicles/Car/@year', xml))::text as year, unnest(xpath('//Vehicles/Car/@brand_ref', xml))::text as brand_ref, unnest(xpath('//Vehicles/Car/@model_ref', xml))::text as model_ref, unnest(xpath('//Data/Vehicles/Car/Msrp/@value', xml))::text as msrp
-        FROM imported_documents WHERE deleted_on IS NULL
-    ),
-    model_data AS (
-        SELECT unnest(xpath('//Brands/Brand/Models/Model/@id', xml))::text as model_id, unnest(xpath('//Brands/Brand/Models/Model/@name', xml))::text as model_name
-        FROM imported_documents WHERE deleted_on IS NULL
-    )
-
-    SELECT car.id, car.year, COALESCE(brand.name, 'N/A') as brand_name, COALESCE(model.model_name, 'N/A') as model_name, car.msrp
-    FROM vehicle_data car
-    LEFT JOIN ( SELECT unnest(xpath('//Brands/Brand/@id', xml))::text as brand_id, unnest(xpath('//Brands/Brand/@name', xml))::text as name
-        FROM imported_documents WHERE deleted_on IS NULL
-    ) brand ON car.brand_ref = brand.brand_id LEFT JOIN model_data model ON car.model_ref = model.model_id WHERE car.msrp IS NOT NULL;
-    """
-
-    results = database.selectAllArray(query)
-    database.disconnect()
-
-    query_result = [
-        {
-            "id": car.get("id", "N/A"),
-            "year": car.get("year", "N/A"),
-            "brand_name": car.get("brand_name", "N/A"),
-            "model_name": car.get("model_name", "N/A"),
-            "msrp": car.get("msrp", "N/A"),
-        }
-        for car in results
-    ]
-
-    return query_result
-
 def fetch_vehicles_by_year(year):
     database = Database()
 
@@ -208,7 +172,7 @@ def fetch_vehicles_by_year(year):
 
     return query_result
 
-""" ESTATISTICAS """
+""" STATS/PERCENTAGE """
 def fetch_model_percentage():
     database = Database()
 

@@ -84,7 +84,7 @@ def removeDocument():
     except Exception as e:
         print(f"Error: {e}")
 
-""" NORMAL SELECT """
+""" NORMAL SELECTS """
 def list_brands():
     try:
         brands = server.fetch_brands()
@@ -118,22 +118,6 @@ def list_market_categories():
                 print(f"- {category}")
         else:
             print("\nNo market categories found.")
-    except Exception as e:
-        print(f"Error: {e}")
-
-def list_brands_by_country():
-    try:
-        country_name = input("Enter the country name: ")
-
-        brands = server.fetch_brands_by_country(country_name)
-
-        if brands:
-            print(f"\nBrands from '{country_name}':")
-            for brand in brands:
-                print(f"\nBrand ID: {brand['brand_id']} \nBrand Name: {brand['brand_name']} \nCountry: {brand['country_name']}")
-        else:
-            print(f"\nNo brands found in '{country_name}'.")
-
     except Exception as e:
         print(f"Error: {e}")
 
@@ -205,50 +189,23 @@ def list_cars_from_year():
     except Exception as e:
         print(f"Error: {e}")
 
-        
-def list_vehicles_category():
-    page = 1
-    results_per_page = 40
-
+def list_brands_by_country():
     try:
-        list_market_categories()
+        country_name = input("Enter the country name: ")
 
-        category_name = input("\nEnter the market category: ")
-        results = server.fetch_vehicles_by_category(category_name)
-        len_results = len(results)
+        brands = server.fetch_brands_by_country(country_name)
 
-        if not results:
-            print(f"\nNo vehicles found in the category '{category_name}'.")
-            return
-
-        while True:
-            start = (page - 1) * results_per_page
-            end = start + results_per_page
-            current_page_results = results[start:end]
-
-            print(f"\nVehicles in the category '{category_name}':")
-            for vehicle in current_page_results:
-                print(f"\nCar ID: {vehicle['id']} \nYear: {vehicle['year']} \nBrand: {vehicle['brand_name']} \nModel: {vehicle['model_name']} \nMSRP: {vehicle['msrp']}")
-
-            print(f"\nShowing results {start + 1} to {min(end, len_results)} out of {len_results}.")
-
-            if len_results > end:
-                response = input("\nType 'n' to go to the next page, 'p' to go to the previous page, or '/return' to leave: ").lower()
-                if response == "n":
-                    page += 1
-                elif response == "p" and page > 1:
-                    page -= 1
-                elif response == "/return":
-                    break
-                else:
-                    print("\nInvalid option")
-            else:
-                break
+        if brands:
+            print(f"\nBrands from '{country_name}':")
+            for brand in brands:
+                print(f"\nBrand ID: {brand['brand_id']} \nBrand Name: {brand['brand_name']} \nCountry: {brand['country_name']}")
+        else:
+            print(f"\nNo brands found in '{country_name}'.")
 
     except Exception as e:
         print(f"Error: {e}")
 
-""" SELECT STATS/PERCENTAGE """
+""" SELECTS STATS/PERCENTAGE """
 def list_brand_model_percentage():
     page = 1
     results_per_page = 40
@@ -336,19 +293,19 @@ def main():
                 continue
 
         elif option == '2':
-            print("\n----------> Menu <----------")
-            print("1 - Select All Brands")
-            print("2 - Select All Models ")
-            print("3 - Select Market Categories ")
-            print("4 - Select Brands By Country ")
-            print("5 - Most Valuable Cars")
-            print("\n----------> TEXT <----------")
+            print("\n---------> MENU <----------")
+            print("\n----------> ALL <----------")
+            print("1 - List All Brands")
+            print("2 - List All Models ")
+            print("3 - List All Market Categories ")
+            print("4 - List Most Valuable Cars")
+            print("\n---------> TEXT <----------")
+            print("5 - List Brands By Country ")
             print("6 - List Models By Brand")
-            print("7 - List Cars By Categories")
-            print("8 - List Cars By Year")
-            print("\n----------> STATS <----------")
-            print("9 - Brand Model Percentage")
-            print("10 - Model Percentage of a Brand")
+            print("7 - List Cars By Year")
+            print("\n---------> STATS <---------")
+            print("8 - Brand Model Percentage")
+            print("9 - Model Percentage of a Brand")
             option = input("Choose an option: ")
             
             if option == '1':
@@ -360,24 +317,21 @@ def main():
             if option == '3':
                 list_market_categories()
             if option == '4':
-                list_brands_by_country()
+                list_most_valuable_cars()
                 continue
             if option == '5':
-                list_most_valuable_cars()
+                list_brands_by_country()
                 continue
             if option == '6':
                 list_models_brand()  
                 continue
             if option == '7':
-                list_vehicles_category() 
-                continue
-            if option == '8':
                 list_cars_from_year()  
                 continue
-            if option == '9':
+            if option == '8':
                 list_brand_model_percentage()
                 continue
-            if option == '10':
+            if option == '9':
                 list_model_percentage_brand()
                 continue
 

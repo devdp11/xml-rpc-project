@@ -22,7 +22,7 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
         print("\nExiting gracefully")
         sys.exit(0)
             
-    """ FILE NAME """
+    """ FILES NAME """
     csv_file = "/data/data.csv"
     xml_file = "/data/data.xml"
     xsd_file = "/data/schemas/data.xsd"
@@ -41,25 +41,20 @@ with SimpleXMLRPCServer(('0.0.0.0', 9000), requestHandler=RequestHandler) as ser
     server.register_function(document.list_documents)
     server.register_function(document.remove_documents)
 
-    """ selects easy """
+    """ select all """
     server.register_function(queries.fetch_brands)
     server.register_function(queries.fetch_models)
     server.register_function(queries.fetch_market_categories)
-    server.register_function(queries.fetch_brands_by_country)
 
-    """ selects hard """
+    """ selects by text """
     server.register_function(queries.fetch_most_valuable_cars)
     server.register_function(queries.fetch_models_by_brand)
-    server.register_function(queries.fetch_vehicles_by_category)
     server.register_function(queries.fetch_vehicles_by_year)
+    server.register_function(queries.fetch_brands_by_country)
 
-    """ selects estatisticas / count """
+    """ selects stats / count """
     server.register_function(queries.fetch_model_percentage)
     server.register_function(queries.fetch_model_percentage_by_brand)
-
-    
-
-
 
     print("\nStarting the RPC Server...")
     server.serve_forever()
