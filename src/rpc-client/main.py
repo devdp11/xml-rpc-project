@@ -264,7 +264,7 @@ def list_model_percentage_brand():
         print(f"Error: {e}")
 
 def start():
-    input("\nPress '3nter' to continue...")
+    input("\nPress 'Enter' to continue...")
     select_database_file()
 
 def main():
