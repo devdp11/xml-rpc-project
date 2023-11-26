@@ -12,7 +12,6 @@ from entities.size import Size
 from entities.style import Style
 from entities.traction import Traction
 from entities.transmission import Transmission
-
 from entities.category import MarketCategoryItem
 from entities.vehicle import Vehicle
 
@@ -44,13 +43,12 @@ class CSVtoXMLConverter:
         self.csv_reader = CSVReader(path)
 
     def to_xml(self):
-        # read countries
+        
         countries = self.csv_reader.read_entities(
             attr="Country",
             builder=lambda row: Country(row["Country"])
         )
 
-        # read brands
         brands = self.csv_reader.read_entities(
             attr="Brand",
             builder=lambda row: Brand(row["Brand"], countries[row["Country"]])
@@ -58,7 +56,6 @@ class CSVtoXMLConverter:
 
         models = {}
 
-        # read models
         def after_creating_model(model, row):
             brands[row["Brand"]].add_model(model)
             models[row["Model"]] = model
@@ -71,37 +68,31 @@ class CSVtoXMLConverter:
             after_create=after_creating_model
         )
 
-        # read fuels
         fuels = self.csv_reader.read_entities(
             attr="Engine Fuel Type",
             builder=lambda row: Fuel(row["Engine Fuel Type"])
         )
 
-        # read sizes
         sizes = self.csv_reader.read_entities(
             attr="Vehicle Size",
             builder=lambda row: Size(row["Vehicle Size"])
         )
 
-        # read styles
         styles = self.csv_reader.read_entities(
             attr="Vehicle Style",
             builder=lambda row: Style(row["Vehicle Style"])
         )
 
-        # read traction
         tractions = self.csv_reader.read_entities(
             attr="Driven Wheels",
             builder=lambda row: Traction(row["Driven Wheels"])
         )
 
-        # read transmission
         transmissions = self.csv_reader.read_entities(
             attr="Transmission Type",
             builder=lambda row: Transmission(row["Transmission Type"])
         )
 
-        # read categories
         categories = self.csv_reader.read_entities(
             attr="Market Category",
             builder=lambda row: row["Market Category"].split(",") if row["Market Category"] else [],
